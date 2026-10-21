@@ -60,7 +60,7 @@ export const MEMBER_DATA = {
 };
 
 export const RESPONDER_DATA = {
-  name: "Akashy",
+  name: "Akshay",
   vehicle: "Response Bike Unit",
   rating: "Sample responder rating",
   rescuesCount: 0,

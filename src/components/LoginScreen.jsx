@@ -15,7 +15,7 @@ const ROLES = [
   {
     id: 'responder',
     name: 'Responder',
-    subtitle: 'Akashy (Bike Unit)',
+    subtitle: 'Akshay (Bike Unit)',
     description: 'Driver or rider nearby who can help first',
     defaultPhone: 'Sample account',
     icon: Bike,
