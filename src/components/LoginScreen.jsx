@@ -8,7 +8,7 @@ const ROLES = [
     name: 'Guardian',
     subtitle: 'Nikhil',
     description: 'The person who takes care of the member',
-    defaultPhone: 'Demo account',
+    defaultPhone: 'Sample account',
     icon: ShieldCheck,
     color: 'text-tealbrand-700 bg-tealbrand-50 border-tealbrand-200'
   },
@@ -17,7 +17,7 @@ const ROLES = [
     name: 'Responder',
     subtitle: 'Akashy (Bike Unit)',
     description: 'Driver or rider nearby who can help first',
-    defaultPhone: 'Demo account',
+    defaultPhone: 'Sample account',
     icon: Bike,
     color: 'text-amber-800 bg-amber-50 border-amber-200'
   },
@@ -26,7 +26,7 @@ const ROLES = [
     name: 'Member',
     subtitle: 'Bavitha (51 yrs)',
     description: 'The person who needs protection',
-    defaultPhone: 'Demo account',
+    defaultPhone: 'Sample account',
     icon: HeartHandshake,
     color: 'text-emergency-700 bg-emergency-50 border-emergency-200'
   }
@@ -40,7 +40,7 @@ export default function LoginScreen({ onLoginSuccess }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const demoOtp = '123456';
+  const simulationAccessCode = '123456';
 
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
@@ -52,7 +52,7 @@ export default function LoginScreen({ onLoginSuccess }) {
   const handleSendOtp = (e) => {
     e.preventDefault();
     if (!phoneNumber.trim()) {
-      setErrorMessage('Please enter the demo account label.');
+      setErrorMessage('Please enter the account label.');
       return;
     }
     setErrorMessage('');
@@ -70,8 +70,8 @@ export default function LoginScreen({ onLoginSuccess }) {
       return;
     }
 
-    // Accepts demo OTP 123456 or any 6-digit code
-    if (otp.trim() === demoOtp || /^\d{6}$/.test(otp.trim())) {
+    // This public simulation accepts a six-digit access code.
+    if (otp.trim() === simulationAccessCode || /^\d{6}$/.test(otp.trim())) {
       setErrorMessage('');
       setIsLoading(true);
       setTimeout(() => {
@@ -79,7 +79,7 @@ export default function LoginScreen({ onLoginSuccess }) {
         onLoginSuccess(selectedRole.id);
       }, 300);
     } else {
-      setErrorMessage('Invalid code format. Enter the demo code 123456 or any 6-digit number.');
+      setErrorMessage('Invalid code format. Enter the six-digit access code.');
     }
   };
 
@@ -87,7 +87,7 @@ export default function LoginScreen({ onLoginSuccess }) {
     <div className="min-h-screen bg-stone-100 flex flex-col justify-center items-center px-4 py-8 font-sans">
       <div className="w-full max-w-md bg-white border border-stone-200 rounded-lg p-6 sm:p-8 shadow-xs">
         <GradientPlaceholder
-          label="ResQ emergency workflow demo"
+          label="ResQ emergency response simulation"
           filename="resq-hero.webp"
           className="mb-5 h-28"
         />
@@ -101,7 +101,7 @@ export default function LoginScreen({ onLoginSuccess }) {
             Welcome to ResQ
           </h1>
           <p className="text-sm text-stone-600 mt-1">
-            Help reaches you first. Choose your role to enter this demo.
+            Help reaches you first. Choose your role to explore the simulation.
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export default function LoginScreen({ onLoginSuccess }) {
           </div>
         )}
 
-        {/* Step 2: Enter demo account label */}
+        {/* Step 2: Enter account label */}
         {step === 'enter_phone' && (
           <form onSubmit={handleSendOtp} className="space-y-4">
             <button
@@ -167,20 +167,20 @@ export default function LoginScreen({ onLoginSuccess }) {
 
             <div>
               <label className="text-xs font-semibold text-stone-700 block mb-1">
-                Enter demo account label:
+                Enter account label:
               </label>
               <div className="relative">
                 <input
                   type="text"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="Demo account"
+                  placeholder="Sample account"
                   className="w-full text-sm px-3 py-2 border border-stone-300 rounded focus:outline-none focus:border-tealbrand-600 font-mono"
                   autoFocus
                 />
               </div>
               <span className="text-[11px] text-stone-500 block mt-1">
-                Demo only: no real phone number is used or contacted.
+                Simulation only: no real phone number is used or contacted.
               </span>
             </div>
 
@@ -207,16 +207,16 @@ export default function LoginScreen({ onLoginSuccess }) {
               className="text-xs text-stone-500 hover:text-stone-800 flex items-center space-x-1"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Change demo account</span>
+              <span>Change account</span>
             </button>
 
             <div>
               <span className="text-xs text-stone-600 block">
-                Demo verification for <strong className="text-stone-900">{phoneNumber}</strong>
+                Simulation access for <strong className="text-stone-900">{phoneNumber}</strong>
               </span>
               <div className="mt-2 p-2.5 bg-tealbrand-50 border border-tealbrand-200 rounded text-xs text-tealbrand-900 flex items-center space-x-2">
                 <Info className="w-4 h-4 text-tealbrand-700 flex-shrink-0" />
-                <span>Public demo only: use <strong>{demoOtp}</strong>. No real verification message is sent.</span>
+                <span>Public simulation only: use <strong>{simulationAccessCode}</strong>. No real verification message is sent.</span>
               </div>
             </div>
 
@@ -249,7 +249,7 @@ export default function LoginScreen({ onLoginSuccess }) {
 
       {/* Footer info */}
       <div className="mt-4 text-center text-xs text-stone-500 max-w-sm">
-        ResQ public demo &bull; no real calls or emergency response &bull; sample data only
+        ResQ public simulation &bull; no real calls or emergency response &bull; sample data only
       </div>
     </div>
   );

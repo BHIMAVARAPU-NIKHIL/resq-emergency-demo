@@ -22,7 +22,7 @@ export default function MemberScreen({
   onTriggerFall,
   onToggleMonitoring,
   onCancelFall,
-  onResetDemo
+  onResetScenario
 }) {
   const isBufferLoud = incidentState.status === 'buffer_loud';
   const isBufferWait = incidentState.status === 'buffer_wait';
@@ -33,7 +33,7 @@ export default function MemberScreen({
   const canManageMonitoring = ['idle', 'cancelled', 'resolved'].includes(incidentState.status);
   const canTriggerFall = incidentState.monitoringEnabled && incidentState.status === 'idle' && !isAlarmActive;
   const incidentStatus = {
-    idle: 'Standing by — no active demo incident',
+    idle: 'Standing by — no active incident',
     buffer_loud: 'Fall alert — loud alarm buffer',
     buffer_wait: 'Fall alert — member response window',
     guardian_call: 'Guardian notification simulation',
@@ -43,9 +43,9 @@ export default function MemberScreen({
     responder_arrived: 'Responder on scene',
     ambulance_dispatched: 'Ambulance simulation en route',
     handover_pending: 'Handover verification pending',
-    resolved: 'Demo incident complete',
-    cancelled: 'Demo alert cancelled'
-  }[incidentState.status] || 'Demo incident status unavailable';
+    resolved: 'Incident simulation complete',
+    cancelled: 'Alert simulation cancelled'
+  }[incidentState.status] || 'Incident status unavailable';
 
   // Sound manager for the emergency siren during the first 15 seconds
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function MemberScreen({
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6 font-sans">
       <GradientPlaceholder label="Member care overview" filename="member-home.webp" variant="member" className="h-24 sm:h-28" />
-      {/* Demo alarm overlay (simulated escalation buffer) */}
+      {/* Alarm overlay (simulated escalation buffer) */}
       {isAlarmActive && (
         <div className="fixed inset-0 z-50 bg-emergency-700 text-white flex flex-col justify-between p-6 sm:p-10 select-none animate-fadeIn">
           {/* Top Status */}
@@ -132,7 +132,7 @@ export default function MemberScreen({
                 {incidentState.status === 'guardian_call' ? 'Incoming emergency call' : 'Emergency live-call stage'}
               </span>
               <h3 className="text-sm font-bold">
-                {incidentState.status === 'guardian_call' ? `Calling ${MEMBER_DATA.contacts.guardian.name} (simulated)` : 'ResQ demo emergency support is calling'}
+                {incidentState.status === 'guardian_call' ? `Calling ${MEMBER_DATA.contacts.guardian.name} (simulated)` : 'ResQ emergency support simulation is calling'}
               </h3>
               <p className="text-xs text-rose-100">
                 {incidentState.status === 'guardian_call'
@@ -160,7 +160,7 @@ export default function MemberScreen({
             <div className="flex items-center space-x-2">
               <h2 className="text-base font-bold text-stone-900">{MEMBER_DATA.name}</h2>
               <span className="text-[10px] font-semibold text-stone-600 bg-stone-100 px-2 py-0.2 rounded border border-stone-200">
-                Age {MEMBER_DATA.age} &bull; Demo account
+                Age {MEMBER_DATA.age} &bull; Member account
               </span>
             </div>
             <p className="text-xs text-stone-500 mt-0.5">
@@ -183,26 +183,26 @@ export default function MemberScreen({
 
           {(isResponderComing || isTerminal) && (
             <button
-              onClick={onResetDemo}
+              onClick={onResetScenario}
               className="px-3 py-1.5 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded text-xs font-semibold flex items-center space-x-1"
             >
               <RefreshCw className="w-3.5 h-3.5" />
-              <span>Reset Demo</span>
+              <span>Reset scenario</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* Demo status banner */}
+      {/* Status banner */}
       <div className="p-3 bg-stone-50 border border-stone-200 rounded flex items-center justify-between text-xs">
         <div className="flex items-center space-x-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
           <span className="font-semibold text-stone-800">
             {isTerminal
-              ? incidentState.status === 'resolved' ? 'Demo incident complete' : 'Demo alert cancelled'
+              ? incidentState.status === 'resolved' ? 'Incident simulation complete' : 'Alert simulation cancelled'
               : incidentState.status === 'idle'
-                ? incidentState.monitoringEnabled ? 'Demo monitoring active' : 'Demo monitoring paused'
-                : 'Demo incident active &bull; No evidence is recorded'}
+                ? incidentState.monitoringEnabled ? 'Monitoring simulation active' : 'Monitoring simulation paused'
+                : 'Incident simulation active &bull; No evidence is recorded'}
           </span>
         </div>
         <span className="text-[11px] text-stone-500 font-mono">
@@ -220,10 +220,10 @@ export default function MemberScreen({
 
       <section className="bg-white border border-stone-200 rounded-lg p-4 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3" aria-label="Simulated monitoring controls">
         <div>
-          <h3 className="text-xs font-bold uppercase tracking-wider text-stone-700">Member monitoring</h3>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-stone-700">Member monitoring simulation</h3>
           <p className="text-xs text-stone-500 mt-1">
             {incidentState.monitoringEnabled
-              ? 'Illustrative demo sensors are on. No real sensors or medical readings are connected.'
+              ? 'Illustrative sensors are on. No real sensors or medical readings are connected.'
               : 'Monitoring is paused. Start the simulation before using the fall-alert control.'}
           </p>
         </div>
@@ -234,7 +234,7 @@ export default function MemberScreen({
           aria-pressed={incidentState.monitoringEnabled}
           className="px-4 py-2 rounded text-xs font-bold bg-tealbrand-700 text-white hover:bg-tealbrand-800 disabled:bg-stone-300 disabled:text-stone-600 disabled:cursor-not-allowed"
         >
-          {incidentState.monitoringEnabled ? 'Pause demo monitoring' : 'Start demo monitoring'}
+          {incidentState.monitoringEnabled ? 'Pause monitoring simulation' : 'Start monitoring simulation'}
         </button>
       </section>
 
@@ -245,7 +245,7 @@ export default function MemberScreen({
             <p className="text-[11px] text-stone-500 mt-1">Illustrative values only; not measured and not medical advice.</p>
           </div>
           <span className="text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-1 rounded">
-            Demo only
+            Sample only
           </span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -276,7 +276,7 @@ export default function MemberScreen({
       <section aria-label="Responder Satellite Map">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xs font-bold uppercase tracking-wider text-stone-600">
-            Demo map &bull; Simulated responder route
+            Simulated map &bull; Responder route
           </h3>
           <span className="text-xs text-stone-500">
             {isResponderComing ? 'Simulated route active' : 'Standby'}
@@ -291,7 +291,7 @@ export default function MemberScreen({
           statusMessage={
             isResponderComing
               ? `${RESPONDER_DATA.name} is on the way &bull; Reaching in ~${Math.ceil(incidentState.responderEtaSeconds / 60)} mins`
-              : 'Your residence is monitored by the simulated demo hub'
+              : 'Your residence is monitored by the simulated response hub'
           }
           responderDistance={incidentState.responderDistanceMeters}
           responderEta={incidentState.responderEtaSeconds}

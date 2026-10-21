@@ -79,8 +79,8 @@ export default function App() {
     }));
   };
 
-  // Reset Demo Scenario
-  const handleResetDemo = () => {
+  // Reset incident scenario
+  const handleResetScenario = () => {
     audioManager.stopAll();
     clearInterval(timerRef.current);
     clearInterval(telemetryRef.current);
@@ -187,9 +187,9 @@ export default function App() {
     }));
   };
 
-  // Simulate demo ambulance dispatch.
+  // Simulate emergency transport dispatch.
   const handleCallAmbulance = () => {
-    addTimelineEvent('Demo ambulance dispatched from the simulated response hub.', 'alert');
+    addTimelineEvent('Emergency transport dispatched from the simulated response hub.', 'alert');
 
     syncManager.updateState((prev) => ({
       ...prev,
@@ -218,13 +218,13 @@ export default function App() {
         {
           id: `evt-${Date.now()}-handover`,
           timestamp,
-          message: 'Demo ambulance team verified the handover code.',
+          message: 'Emergency transport team verified the handover code.',
           status: 'success'
         },
         {
           id: `evt-${Date.now()}-resolved`,
           timestamp,
-          message: 'Demo rescue mission completed successfully.',
+          message: 'Response simulation completed successfully.',
           status: 'success'
         }
       ];
@@ -296,7 +296,7 @@ export default function App() {
             nextStatus = 'responder_alerted';
             nextStep = 'responder';
             nextDuration = 0;
-            addTimelineEvent(`Live call timed out. ${RESPONDER_DATA.name} notified and demo ambulance alert simulated.`, 'alert');
+            addTimelineEvent(`Live call timed out. ${RESPONDER_DATA.name} notified and emergency transport alert simulated.`, 'alert');
           }
 
           const advancedState = {
@@ -324,7 +324,7 @@ export default function App() {
         syncManager.updateState((prev) => {
           let updated = { ...prev };
 
-          // Move the simulated responder to the demo residence.
+          // Move the simulated responder to the sample residence.
           if (prev.status === 'responder_enroute') {
             const currentRCoords = prev.responderCoords;
             const target = COORDINATES.member;
@@ -353,7 +353,7 @@ export default function App() {
             }
           }
 
-          // Move the simulated ambulance to the demo residence.
+          // Move the simulated ambulance to the sample residence.
           if (prev.status === 'ambulance_dispatched') {
             const currentACoords = prev.ambulanceCoords;
             const target = COORDINATES.member;
@@ -371,7 +371,7 @@ export default function App() {
                 ambulanceDistanceMeters: 0,
                 ambulanceEtaSeconds: 0
               };
-              addTimelineEvent('Demo ambulance reached the simulated residence. Ready for handover verification.', 'info');
+              addTimelineEvent('Emergency transport reached the simulated residence. Ready for handover verification.', 'info');
             } else {
               updated = {
                 ...updated,
@@ -404,7 +404,7 @@ export default function App() {
         incidentStatus={incidentState.status}
         speedMultiplier={incidentState.speedMultiplier}
         onToggleSpeed={handleToggleSpeed}
-        onResetDemo={handleResetDemo}
+        onResetScenario={handleResetScenario}
       />
 
       <IncidentStepper status={incidentState.status} />
@@ -426,7 +426,7 @@ export default function App() {
             onCallAmbulance={handleCallAmbulance}
             onSubmitHandoverOtp={handleSubmitHandoverOtp}
             onMarkTabletsLocated={handleMarkTabletsLocated}
-            onResetDemo={handleResetDemo}
+            onResetScenario={handleResetScenario}
           />
         )}
 
@@ -436,7 +436,7 @@ export default function App() {
             onTriggerFall={handleTriggerFall}
             onToggleMonitoring={handleToggleMonitoring}
             onCancelFall={handleCancelFall}
-            onResetDemo={handleResetDemo}
+            onResetScenario={handleResetScenario}
           />
         )}
       </main>
@@ -446,7 +446,7 @@ export default function App() {
       {/* Clean Mobile-first Footer */}
       <footer className="bg-white border-t border-stone-200 py-3 text-center text-xs text-stone-500">
         <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-1.5">
-          <span>ResQ &bull; Public Demo — simulated data only</span>
+          <span>ResQ &bull; Public simulation — sample data only</span>
           <span className="text-[11px] text-stone-400 font-mono">
             Cross-Tab Real-time BroadcastChannel Sync Active
           </span>

@@ -34,7 +34,7 @@ export default function ResponderDashboard({
   onCallAmbulance,
   onSubmitHandoverOtp,
   onMarkTabletsLocated,
-  onResetDemo
+  onResetScenario
 }) {
   const [isOnline, setIsOnline] = useState(true);
   const [showPermissionModal, setShowPermissionModal] = useState(false);
@@ -181,8 +181,8 @@ export default function ResponderDashboard({
         // Timestamp overlay
         ctx.fillStyle = '#ffffff';
         ctx.font = '10px monospace';
-        ctx.fillText('RESQ DEMO RESPONDER CAM', 12, 20);
-        ctx.fillText('GPS: demo location only', 12, 36);
+        ctx.fillText('RESQ RESPONDER CAMERA', 12, 20);
+        ctx.fillText('GPS: simulated location only', 12, 36);
         ctx.fillText(`SIMULATED ${new Date().toLocaleTimeString('en-IN')}`, 12, 52);
 
         frameId = requestAnimationFrame(drawSimulatedFeed);
@@ -222,7 +222,7 @@ export default function ResponderDashboard({
               </span>
             </div>
             <p className="text-xs text-stone-500 mt-0.5">
-              {RESPONDER_DATA.certifications} &bull; Demo area
+              {RESPONDER_DATA.certifications} &bull; Simulated area
             </p>
           </div>
         </div>
@@ -259,15 +259,15 @@ export default function ResponderDashboard({
               </h3>
               <p className="text-sm text-stone-600 mt-1">
                 {isResolved
-                  ? 'The last demo incident has been handed over. Reset the demo to wait for another request.'
+                  ? 'The last incident simulation has been handed over. Reset the scenario to wait for another request.'
                   : incidentState.status === 'cancelled'
-                    ? 'The alert was cancelled. Reset the demo or switch to Member to simulate another fall.'
+                    ? 'The alert was cancelled. Reset the scenario or switch to Member to simulate another fall.'
                     : isOnline
                       ? 'No emergency requests right now. When a dispatch arrives, accept it to see the member’s live location and essential care details.'
-                      : 'Go online to receive the next demo emergency request.'}
+                      : 'Go online to receive the next simulated emergency request.'}
               </p>
               <p className="text-xs text-stone-500 mt-3">
-                To test the demo, switch to Member, tap <strong>Simulate Fall</strong>, then return here after the alert escalates.
+                To try the simulation, switch to Member, tap <strong>Simulate Fall</strong>, then return here after the alert escalates.
               </p>
             </div>
           </div>
@@ -321,7 +321,7 @@ export default function ResponderDashboard({
           <div>
             <h3 className="text-xl font-bold">Fall alert: {MEMBER_DATA.name} ({MEMBER_DATA.age} yrs)</h3>
             <p className="text-xs text-emergency-100 mt-1">
-              Demo member and guardian calls timed out. Simulated dispatch triggered.
+              Member and guardian call simulations timed out. A simulated dispatch was triggered.
             </p>
           </div>
 
@@ -346,7 +346,7 @@ export default function ResponderDashboard({
       {incidentState.responderAccepted && (
         <section className="bg-white border border-stone-200 rounded-lg p-4 sm:p-5 shadow-xs space-y-3" aria-label="Accepted sample member details">
           <div className="flex items-center justify-between border-b border-stone-100 pb-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-800">Sample member profile (demo)</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-800">Sample member profile</h3>
             <span className="text-xs font-mono text-stone-500">
               {incidentState.responderDistanceMeters >= 1000 ? `${(incidentState.responderDistanceMeters / 1000).toFixed(1)} km away` : `${incidentState.responderDistanceMeters} m away`}
             </span>
@@ -357,7 +357,7 @@ export default function ResponderDashboard({
               <strong className="text-sm text-stone-900">{MEMBER_DATA.name}, {MEMBER_DATA.age} yrs</strong>
             </div>
             <div>
-              <span className="text-[10px] uppercase font-bold text-stone-400 block">Demo location</span>
+              <span className="text-[10px] uppercase font-bold text-stone-400 block">Simulated location</span>
               <strong className="text-stone-800">{MEMBER_DATA.address}</strong>
             </div>
             <div>
@@ -463,7 +463,7 @@ export default function ResponderDashboard({
             {incidentState.tabletsLocated ? (
               <span className="text-emerald-800 font-semibold flex items-center space-x-1">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Verified: Sample medication is ready for the demo handover.</span>
+                <span>Verified: Sample medication is ready for the simulated handover.</span>
               </span>
             ) : (
               <span>Once inside, check the sample storage location and confirm below:</span>
@@ -481,7 +481,7 @@ export default function ResponderDashboard({
           ) : (
             <span className="px-3 py-1 bg-emerald-100 text-emerald-900 text-xs font-bold rounded flex items-center space-x-1.5 flex-shrink-0">
               <CheckSquare className="w-3.5 h-3.5 text-emerald-700" />
-              <span>Sample medication secured for demo handover</span>
+              <span>Sample medication secured for simulated handover</span>
             </span>
           )}
         </div>
@@ -498,9 +498,9 @@ export default function ResponderDashboard({
                   ? `Head ${routeDirection} toward the simulated residence.`
                   : isArrived
                     ? 'You are at the simulated residence.'
-                    : 'Demo route guidance is standing by.'}
+                    : 'Simulated route guidance is standing by.'}
               </p>
-              <p className="mt-1 text-[11px] text-stone-600">Straight-line demo guidance only; no live GPS or road directions are used.</p>
+              <p className="mt-1 text-[11px] text-stone-600">Straight-line guidance only; no live GPS or road directions are used.</p>
             </div>
           </div>
         </section>
@@ -527,7 +527,7 @@ export default function ResponderDashboard({
               ? `Travelling to the simulated residence &bull; ETA ~${Math.ceil(incidentState.responderEtaSeconds / 60)} mins`
               : isArrived
                 ? 'Arrived at the simulated residence. Checking sample member status.'
-                : 'Standby at the simulated demo hub'
+                : 'Standby at the simulated response hub'
           }
           responderDistance={incidentState.responderDistanceMeters}
           responderEta={incidentState.responderEtaSeconds}
@@ -575,7 +575,7 @@ export default function ResponderDashboard({
                   <span>{isLiveSharing ? 'LIVE' : 'PREVIEW'}</span>
                 </span>
                 <span className="font-mono text-[10px] text-stone-300 bg-black/60 px-2 py-0.5 rounded">
-                  {cameraPermission === 'granted' ? 'Camera preview' : 'Demo preview only'}
+                  {cameraPermission === 'granted' ? 'Camera preview' : 'Simulated preview only'}
                 </span>
               </div>
 
@@ -628,7 +628,7 @@ export default function ResponderDashboard({
                 </div>
               </div>
 
-              {/* Demo media status */}
+              {/* Media status */}
               <div className="p-3 bg-stone-50 border border-stone-200 rounded space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-semibold text-stone-800 flex items-center space-x-1">
@@ -640,11 +640,11 @@ export default function ResponderDashboard({
 
                 <div className="space-y-1 text-[11px] font-mono text-stone-600">
                   <div className="flex items-center justify-between py-0.5 border-b border-stone-200">
-                    <span>Demo camera preview</span>
+                    <span>Camera preview simulation</span>
                     <span className="text-stone-500 font-bold">Not recorded</span>
                   </div>
                   <div className="flex items-center justify-between py-0.5 border-b border-stone-200">
-                    <span>Demo audio indicator</span>
+                    <span>Audio indicator simulation</span>
                     <span className="text-stone-500 font-bold">Not recorded</span>
                   </div>
                   <div className="flex items-center justify-between py-0.5">
@@ -676,13 +676,13 @@ export default function ResponderDashboard({
         </div>
       )}
 
-      {/* 4-STEP DEMO GUIDE ON HOW TO BE WITH MEMBER (Section 7 requirement) */}
+      {/* 4-step responder guide */}
       {isArrived && (
         <section className="bg-white border border-stone-200 rounded-lg p-4 sm:p-5 shadow-xs space-y-4">
           <div className="flex items-center space-x-2 border-b border-stone-100 pb-2">
             <HeartPulse className="w-4 h-4 text-emergency-700" />
             <h3 className="text-xs font-bold uppercase tracking-wider text-stone-900">
-              Demo response sequence (not medical advice)
+              Response simulation sequence (not medical advice)
             </h3>
           </div>
 
@@ -695,7 +695,7 @@ export default function ResponderDashboard({
             </div>
 
             <div className="p-3 bg-stone-50 border border-stone-200 rounded space-y-1">
-              <span className="font-bold text-stone-900 block">Step 2: Review demo notice</span>
+              <span className="font-bold text-stone-900 block">Step 2: Review simulation notice</span>
               <p className="text-stone-600 leading-relaxed">
                 This screen provides no medical guidance. Follow qualified emergency professionals in a real emergency.
               </p>
@@ -719,19 +719,19 @@ export default function ResponderDashboard({
                   </span>
                 ) : (
                   <span className="text-[10px] bg-amber-200 text-amber-900 font-bold px-1.5 py-0.2 rounded animate-pulse">
-                    Demo only
+                    Sample only
                   </span>
                 )}
               </div>
               <p className="text-stone-700 leading-relaxed">
-                Check the <strong>sample medicine storage location</strong> for demo medication. No real medical instructions are provided.
+                Check the <strong>sample medicine storage location</strong> for the sample medication. No real medical instructions are provided.
               </p>
             </div>
 
             <div className="p-3 bg-stone-50 border border-stone-200 rounded space-y-1">
-              <span className="font-bold text-stone-900 block">Step 4: Complete demo handover</span>
+              <span className="font-bold text-stone-900 block">Step 4: Complete simulated handover</span>
               <p className="text-stone-600 leading-relaxed">
-                Maintain continuous visual and verbal contact until the demo handover is complete.
+                Maintain continuous visual and verbal contact until the simulated handover is complete.
               </p>
             </div>
           </div>
@@ -739,7 +739,7 @@ export default function ResponderDashboard({
           {/* Call Ambulance Action */}
           {!isAmbulanceCalled && (
             <div className="pt-2 border-t border-stone-100 flex items-center justify-between">
-              <span className="text-xs text-stone-500">Dispatch the demo ambulance</span>
+              <span className="text-xs text-stone-500">Dispatch emergency transport</span>
               <button
                 onClick={onCallAmbulance}
                 className="px-4 py-2 bg-emergency-600 hover:bg-emergency-700 text-white rounded text-xs font-bold shadow-xs flex items-center space-x-1.5"
@@ -766,7 +766,7 @@ export default function ResponderDashboard({
           <div>
             <h3 className="text-base font-bold">Enter Handover OTP with Ambulance Crew</h3>
             <p className="text-xs text-stone-300 mt-1">
-              Demo ambulance team is on scene. Complete the simulated member handover using the demo verification code.
+              Emergency transport is on scene. Complete the simulated member handover using the verification code.
             </p>
           </div>
 
@@ -812,7 +812,7 @@ export default function ResponderDashboard({
             <div>
               <h3 className="text-base font-bold">Ambulance Has Taken Over the Member</h3>
               <p className="text-xs text-stone-600">
-                Demo rescue complete. The sample member handover was simulated.
+                Response simulation complete. The sample member handover was simulated.
               </p>
             </div>
           </div>
@@ -841,37 +841,37 @@ export default function ResponderDashboard({
               </div>
               <div className="flex justify-between border-b border-stone-100 pb-1">
                 <span>Handover Verification:</span>
-                <span className="font-mono text-emerald-700 font-bold">Demo code {incidentState.handoverOtp} confirmed</span>
+                <span className="font-mono text-emerald-700 font-bold">Verification code {incidentState.handoverOtp} confirmed</span>
               </div>
               <div className="flex justify-between pt-0.5">
                 <span>Evidence Package:</span>
-                <span className="text-stone-600">Not saved &bull; Demo only</span>
+                <span className="text-stone-600">Not saved &bull; Simulation only</span>
               </div>
             </div>
           </div>
 
           <div className="flex justify-end">
             <button
-              onClick={onResetDemo}
+              onClick={onResetScenario}
               className="px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded text-xs font-semibold flex items-center space-x-1.5"
             >
               <RefreshCw className="w-3.5 h-3.5" />
-              <span>Reset Demo Scenario</span>
+              <span>Reset scenario</span>
             </button>
           </div>
         </section>
       )}
 
-      {/* Demo medication reference */}
+      {/* Medication reference */}
       {isArrived && <section className="bg-white border border-stone-200 rounded-lg p-4 sm:p-5 shadow-xs space-y-3">
         <div className="flex items-center justify-between border-b border-stone-100 pb-2.5">
           <div className="flex items-center space-x-2">
             <Pill className="w-4 h-4 text-tealbrand-700" />
             <h3 className="text-xs font-bold uppercase tracking-wider text-stone-900">
-              Sample member reference &bull; Demo incident brief
+              Sample member reference &bull; Incident summary
             </h3>
           </div>
-          <span className="text-xs text-stone-500 font-mono">Simulated demo hub</span>
+          <span className="text-xs text-stone-500 font-mono">Simulated response hub</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -889,7 +889,7 @@ export default function ResponderDashboard({
             <span className="text-[10px] uppercase font-bold text-stone-400 block">Emergency Tablet Storage</span>
             <span className="font-semibold text-stone-800">{MEMBER_DATA.medicines.join(' & ')}</span>
             <span className="text-amber-800 font-bold block mt-0.5 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-              Demo storage location
+              Sample storage location
             </span>
           </div>
         </div>

@@ -11,7 +11,7 @@ export default function GradientPlaceholder({ label, filename, variant = 'hero',
   return (
     <div
       role="img"
-      aria-label={`${label} image placeholder, planned asset ${filename}`}
+      aria-label={`${label} placeholder, planned asset ${filename}`}
       data-placeholder-filename={filename}
       className={`relative isolate overflow-hidden rounded-xl bg-gradient-to-br ${gradients[variant] || gradients.hero} ${className}`}
     >

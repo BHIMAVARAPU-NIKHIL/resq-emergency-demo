@@ -22,7 +22,7 @@ export default function IncidentStepper({ status }) {
     >
       <div className="rounded-xl border border-stone-200 bg-white px-3 py-3 shadow-xs sm:px-5">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">Demo workflow</span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">Response workflow simulation</span>
           <span className={`text-xs font-semibold ${isCancelled ? 'text-stone-600' : 'text-tealbrand-800'}`}>
             {currentLabel}{isCancelled ? ' — stopped' : ''}
           </span>

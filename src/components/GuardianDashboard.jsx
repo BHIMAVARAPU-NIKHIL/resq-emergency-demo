@@ -46,11 +46,11 @@ export default function GuardianDashboard({
   const isResponderEnroute = ['responder_enroute', 'responder_arrived', 'ambulance_dispatched', 'handover_pending', 'resolved'].includes(incidentState.status);
   const isGuardianCalling = incidentState.status === 'guardian_call';
   const incidentSummary = {
-    idle: { title: 'Demo is standing by', detail: 'No real sensors or monitoring are connected.', tone: 'border-emerald-200 bg-emerald-50 text-emerald-900' },
+    idle: { title: 'System is standing by', detail: 'No real sensors or monitoring are connected.', tone: 'border-emerald-200 bg-emerald-50 text-emerald-900' },
     cancelled: { title: 'Alert cancelled — member confirmed safe', detail: 'No active response is required.', tone: 'border-stone-200 bg-stone-50 text-stone-900' },
     resolved: { title: 'Rescue completed', detail: 'The member has been handed over to the ambulance team.', tone: 'border-blue-200 bg-blue-50 text-blue-900' }
   }[incidentState.status] || {
-    title: 'Demo response simulation in progress',
+    title: 'Response simulation in progress',
     detail: 'Simulated responder and guardian updates appear here.',
     tone: 'border-emergency-200 bg-emergency-50 text-emergency-900'
   };
@@ -72,17 +72,17 @@ export default function GuardianDashboard({
               </span>
             </div>
             <p className="text-xs text-stone-500 mt-0.5">
-              Demo profile: <strong className="text-stone-800">{MEMBER_DATA.name} ({MEMBER_DATA.age} yrs)</strong> &bull; Simulated area
+              Member profile: <strong className="text-stone-800">{MEMBER_DATA.name} ({MEMBER_DATA.age} yrs)</strong> &bull; Simulated area
             </p>
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
           <div className="text-right">
-            <span className="text-[10px] uppercase font-bold text-stone-400 block">Demo sensor simulation</span>
+            <span className="text-[10px] uppercase font-bold text-stone-400 block">Sensor simulation</span>
             <span className="text-xs font-semibold text-emerald-700 flex items-center space-x-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              <span>{incidentState.monitoringEnabled ? 'Demo monitoring active (not connected)' : 'Demo monitoring paused'}</span>
+              <span>{incidentState.monitoringEnabled ? 'Monitoring simulation active (not connected)' : 'Monitoring simulation paused'}</span>
             </span>
           </div>
         </div>
@@ -147,7 +147,7 @@ export default function GuardianDashboard({
           <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-stone-700">
             Simulated location
           </h3>
-          <span className="text-xs text-stone-500">Demo response hub</span>
+          <span className="text-xs text-stone-500">Simulated response hub</span>
         </div>
         <SatelliteMap
           memberCoords={COORDINATES.member}
@@ -157,7 +157,7 @@ export default function GuardianDashboard({
           showAmbulance={incidentState.ambulanceDispatched}
           statusMessage={
             isResponderEnroute
-              ? `${RESPONDER_DATA.name} approaching the simulated residence &bull; Demo route`
+              ? `${RESPONDER_DATA.name} approaching the simulated residence &bull; Simulated route`
               : 'Simulated residence &bull; Responders on standby'
           }
           responderDistance={incidentState.responderDistanceMeters}
@@ -175,7 +175,7 @@ export default function GuardianDashboard({
               <span>
                 <span className="text-[10px] uppercase font-bold text-stone-400 block">Accepted responder</span>
                 <span className="text-sm font-bold text-stone-900">{RESPONDER_DATA.name}</span>
-                <span className="text-xs text-stone-600 block">Demo phone: {RESPONDER_DATA.phone} (not dialable)</span>
+                <span className="text-xs text-stone-600 block">Sample phone: {RESPONDER_DATA.phone} (not dialable)</span>
               </span>
             </div>
             {incidentState.ambulanceDispatched && (
@@ -183,7 +183,7 @@ export default function GuardianDashboard({
                 <span>
                   <span className="text-[10px] uppercase font-bold text-stone-400 block">Dispatched ambulance</span>
                   <span className="text-sm font-bold text-stone-900">{AMBULANCE_DATA.service}</span>
-                  <span className="text-xs text-stone-600 block">Demo phone: {AMBULANCE_DATA.phone} (not dialable)</span>
+                  <span className="text-xs text-stone-600 block">Sample phone: {AMBULANCE_DATA.phone} (not dialable)</span>
                 </span>
               </div>
             )}
@@ -205,8 +205,8 @@ export default function GuardianDashboard({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <span className="text-[10px] uppercase font-bold tracking-wider text-tealbrand-200">ResQ Protection Plan</span>
-            <h3 className="text-sm font-bold mt-1">Demo subscription plan preview</h3>
-            <p className="text-xs text-tealbrand-100 mt-1">Subscription plans shown for demonstration; payment is not enabled.</p>
+            <h3 className="text-sm font-bold mt-1">Subscription plan preview</h3>
+            <p className="text-xs text-tealbrand-100 mt-1">Subscription plans are illustrative; payment is not enabled.</p>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="bg-white/10 border border-white/20 rounded px-3 py-2 text-center">
@@ -232,7 +232,7 @@ export default function GuardianDashboard({
               </h3>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs text-stone-500">Calls are disabled in this demo</span>
+              <span className="text-xs text-stone-500">Calls are disabled in this simulation</span>
             </div>
           </div>
 
@@ -269,7 +269,7 @@ export default function GuardianDashboard({
               )}
 
               <div className="relative mt-auto flex items-center justify-between text-[11px] text-stone-300 z-10 pt-4">
-                <span>{connectionStatus === 'connected' ? 'Live responder camera and microphone' : 'This preview demo requires both tabs in one browser'}</span>
+                <span>{connectionStatus === 'connected' ? 'Live responder camera and microphone' : 'This preview requires both role tabs in one browser'}</span>
                 <span className="font-mono">{RESPONDER_DATA.name}</span>
               </div>
             </div>
@@ -297,7 +297,7 @@ export default function GuardianDashboard({
                     />
                   ))}
                 </div>
-                <span className="text-[10px] text-stone-500">Animated demo visualization</span>
+                <span className="text-[10px] text-stone-500">Animated illustration only</span>
               </div>
 
               {/* Responder Profile Card */}
@@ -328,7 +328,7 @@ export default function GuardianDashboard({
               Protected Member Profile
             </h3>
           </div>
-          <span className="text-xs text-stone-500">ID: DEMO-001</span>
+          <span className="text-xs text-stone-500">ID: RESQ-001</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -339,7 +339,7 @@ export default function GuardianDashboard({
           </div>
 
           <div>
-            <span className="text-[11px] uppercase font-bold text-stone-400 block">Demo location</span>
+            <span className="text-[11px] uppercase font-bold text-stone-400 block">Simulated location</span>
             <span className="text-xs font-medium text-stone-800 block leading-relaxed">
               {MEMBER_DATA.address}
             </span>
@@ -367,7 +367,7 @@ export default function GuardianDashboard({
               <HeartPulse className="w-3.5 h-3.5 text-emergency-700" />
               <span>Sample medication &amp; storage:</span>
             </span>
-            <span className="text-[11px] text-stone-500">Demo data only</span>
+            <span className="text-[11px] text-stone-500">Sample data only</span>
           </div>
 
           <div className="flex flex-wrap gap-2">
@@ -471,7 +471,7 @@ export default function GuardianDashboard({
               Coming soon &bull; Simulation
             </span>
           </div>
-          <span className="text-xs font-mono text-tealbrand-800 font-semibold">Demo only</span>
+          <span className="text-xs font-mono text-tealbrand-800 font-semibold">Illustration only</span>
         </div>
 
         <p className="text-xs text-stone-600">
@@ -479,7 +479,7 @@ export default function GuardianDashboard({
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Illustrative demo waveform */}
+          {/* Illustrative waveform */}
           <div className="p-3 bg-stone-900 text-white rounded border border-stone-800 space-y-2">
             <div className="flex items-center justify-between text-[11px]">
               <span className="text-stone-400">Sub-carrier Body Motion Waveform</span>
@@ -504,7 +504,7 @@ export default function GuardianDashboard({
                 />
               </svg>
               <div className="absolute bottom-1 right-2 text-[10px] font-mono text-stone-400">
-                Demo visualization only
+                Illustration only
               </div>
             </div>
 
@@ -525,7 +525,7 @@ export default function GuardianDashboard({
             <div className="flex items-center justify-between text-xs font-semibold text-stone-700">
               <span className="flex items-center space-x-1">
                 <Box className="w-3.5 h-3.5 text-tealbrand-700" />
-                <span>Demo home &bull; Simulated layout</span>
+                <span>Sample home &bull; Simulated layout</span>
               </span>
               <span className="text-[10px] text-stone-500">Isometric View</span>
             </div>
@@ -573,17 +573,17 @@ export default function GuardianDashboard({
               <span className="text-sm font-bold text-stone-900">{MEMBER_DATA.contacts.guardian.name}</span>
               <span className="text-xs text-stone-500 block">{MEMBER_DATA.contacts.guardian.relation}</span>
             </div>
-            <span className="text-xs text-stone-500">Demo phone: {MEMBER_DATA.contacts.guardian.phone} (not dialable)</span>
+            <span className="text-xs text-stone-500">Sample phone: {MEMBER_DATA.contacts.guardian.phone} (not dialable)</span>
           </div>
 
           {/* (b) Risk Saver */}
           <div className="p-3 bg-stone-50 border border-stone-200 rounded flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-bold text-stone-400 block">Demo support</span>
+              <span className="text-[10px] uppercase font-bold text-stone-400 block">Support</span>
               <span className="text-sm font-bold text-stone-900">{MEMBER_DATA.contacts.riskSaver.name}</span>
               <span className="text-xs text-stone-500 block">{MEMBER_DATA.contacts.riskSaver.role}</span>
             </div>
-            <span className="text-xs text-stone-500">Demo phone: {MEMBER_DATA.contacts.riskSaver.phone} (not dialable)</span>
+            <span className="text-xs text-stone-500">Sample phone: {MEMBER_DATA.contacts.riskSaver.phone} (not dialable)</span>
           </div>
         </div>
       </section>
@@ -591,7 +591,7 @@ export default function GuardianDashboard({
       {/* System Status Telemetry */}
       <details className="bg-white border border-stone-200 rounded-lg p-4 sm:p-5 shadow-xs group">
         <summary className="cursor-pointer list-none flex items-center justify-between gap-3 text-xs font-bold uppercase tracking-wider text-stone-700">
-          <span>Demo status &amp; telemetry</span>
+          <span>System status &amp; telemetry</span>
           <span className="text-[10px] font-medium normal-case tracking-normal text-stone-500 group-open:hidden">Show details</span>
           <span className="text-[10px] font-medium normal-case tracking-normal text-stone-500 hidden group-open:inline">Hide details</span>
         </summary>

@@ -9,7 +9,7 @@ export const INITIAL_INCIDENT_STATE = {
   fallTriggeredAt: null,
   activeStep: null, // 'loudAlarm' | 'memberWait' | 'guardianCall' | 'liveCall' | 'responder' | 'ambulance'
   stepRemainingSeconds: 0,
-  speedMultiplier: 1, // 1 for normal, 3 for 3x fast demo
+  speedMultiplier: 1, // 1 for normal, 3 for 3x fast simulation
   monitoringEnabled: false,
 
   // Responder telemetry
@@ -40,7 +40,7 @@ export const INITIAL_INCIDENT_STATE = {
     {
       id: 'init-1',
       timestamp: new Date().toLocaleTimeString('en-IN', { hour12: false }),
-      message: 'Public demo online and standing by in the simulated area',
+      message: 'ResQ online and standing by in the simulated area',
       status: 'info'
     }
   ]
@@ -56,7 +56,7 @@ class RealtimeSyncManager {
         localStorage.removeItem('rescue_help_incident_state_v1');
         localStorage.removeItem('rescue_help_user_phone');
       } catch (error) {
-        console.error('Could not clear previous demo data from local storage:', error);
+        console.error('Could not clear previous simulation data from local storage:', error);
       }
     }
 
@@ -92,7 +92,7 @@ class RealtimeSyncManager {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        return { ...INITIAL_INCIDENT_STATE, ...JSON.parse(stored) };
+        return this.sanitizeState({ ...INITIAL_INCIDENT_STATE, ...JSON.parse(stored) });
       }
     } catch {
       // Ignored
@@ -102,8 +102,9 @@ class RealtimeSyncManager {
 
   saveState(newState) {
     if (typeof window === 'undefined') return;
+    const sanitizedState = this.sanitizeState(newState);
     try {
-      const serialized = JSON.stringify(newState);
+      const serialized = JSON.stringify(sanitizedState);
       localStorage.setItem(STORAGE_KEY, serialized);
     } catch {
       // Ignored
@@ -111,12 +112,12 @@ class RealtimeSyncManager {
 
     if (this.channel) {
       try {
-        this.channel.postMessage(newState);
+        this.channel.postMessage(sanitizedState);
       } catch {
         // Ignored
       }
     }
-    this.notifyListeners(newState);
+    this.notifyListeners(sanitizedState);
   }
 
   updateState(updater) {
@@ -133,7 +134,7 @@ class RealtimeSyncManager {
         {
           id: `rst-${Date.now()}`,
           timestamp: new Date().toLocaleTimeString('en-IN', { hour12: false }),
-          message: 'Demo scenario reset. System standing by in the simulated area.',
+          message: 'Scenario reset. System standing by in the simulated area.',
           status: 'info'
         }
       ]
@@ -148,13 +149,26 @@ class RealtimeSyncManager {
   }
 
   notifyListeners(state) {
+    const sanitizedState = this.sanitizeState(state);
     this.listeners.forEach((listener) => {
       try {
-        listener(state);
+        listener(sanitizedState);
       } catch (err) {
         console.error('Error in sync listener', err);
       }
     });
+  }
+
+  sanitizeState(state) {
+    if (!state || !Array.isArray(state.timeline)) return state;
+    return {
+      ...state,
+      timeline: state.timeline.map((event) => (
+        typeof event?.message === 'string'
+          ? { ...event, message: event.message.replace(/\bdemo\b/gi, 'simulation') }
+          : event
+      ))
+    };
   }
 }
 

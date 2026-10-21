@@ -7,7 +7,7 @@ export default function RoleSwitcher({
   incidentStatus,
   speedMultiplier,
   onToggleSpeed,
-  onResetDemo
+  onResetScenario
 }) {
   const [showAboutModal, setShowAboutModal] = useState(false);
 
@@ -28,7 +28,7 @@ export default function RoleSwitcher({
       case 'responder_arrived':
         return { text: 'Responder on Scene', color: 'bg-tealbrand-100 text-tealbrand-900 border-tealbrand-300' };
       case 'ambulance_dispatched':
-        return { text: 'Demo ambulance en route', color: 'bg-emergency-100 text-emergency-800 border-emergency-300' };
+        return { text: 'Emergency transport en route', color: 'bg-emergency-100 text-emergency-800 border-emergency-300' };
       case 'handover_pending':
         return { text: 'Ambulance Handover OTP', color: 'bg-purple-50 text-purple-800 border-purple-200' };
       case 'resolved':
@@ -54,7 +54,7 @@ export default function RoleSwitcher({
                 <span className="text-sm font-bold text-stone-900 tracking-tight leading-none block">
                   ResQ
                 </span>
-                <span className="text-[10px] text-stone-500">Demo only • no real emergency response</span>
+                <span className="text-[10px] text-stone-500">Simulation only • no real emergency response</span>
               </div>
             </div>
 
@@ -113,7 +113,7 @@ export default function RoleSwitcher({
           <div className="flex items-center gap-1.5 justify-end">
             <button
               onClick={onToggleSpeed}
-              title="Fast demo: runs 15s timers at 3x speed (5s)"
+              title="Fast simulation: runs 15s timers at 3x speed (5s)"
               className={`px-2 py-1 rounded text-xs font-medium border flex items-center space-x-1 transition-colors ${
                 speedMultiplier > 1
                   ? 'bg-amber-100 text-amber-900 border-amber-300 font-bold'
@@ -125,7 +125,7 @@ export default function RoleSwitcher({
             </button>
 
             <button
-              onClick={onResetDemo}
+              onClick={onResetScenario}
               title="Reset entire incident scenario"
               className="px-2 py-1 rounded text-xs font-medium bg-white text-stone-700 border border-stone-200 hover:bg-stone-50 flex items-center space-x-1"
             >
@@ -135,7 +135,7 @@ export default function RoleSwitcher({
 
             <button
               onClick={() => setShowAboutModal(true)}
-              title="Demo Mode details & APIs"
+              title="Simulation details & APIs"
               className="p-1 rounded text-stone-500 hover:text-stone-800 hover:bg-stone-100"
             >
               <Info className="w-4 h-4" />
@@ -144,14 +144,14 @@ export default function RoleSwitcher({
         </div>
       </header>
 
-      {/* About / Demo Mode Modal */}
+      {/* About / simulation modal */}
       {showAboutModal && (
         <div className="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-lg border border-stone-300 max-w-md w-full p-5 shadow-lg space-y-4">
             <div className="flex items-center justify-between border-b border-stone-200 pb-3">
               <div className="flex items-center space-x-2">
                 <Info className="w-4 h-4 text-tealbrand-700" />
-                <h3 className="text-sm font-bold text-stone-900">ResQ &bull; Demo Architecture</h3>
+                <h3 className="text-sm font-bold text-stone-900">ResQ &bull; Simulation details</h3>
               </div>
               <button
                 onClick={() => setShowAboutModal(false)}
@@ -172,7 +172,7 @@ export default function RoleSwitcher({
                 <strong>Real Browser APIs Used:</strong> Leaflet Esri satellite imagery tiles, Web Audio API synthesizer (for sirens and dial tones), Vibration API, Geolocation, and MediaRecorder/getUserMedia camera feeds with simulated fallback.
               </p>
               <p>
-                <strong>Simulated for Demo:</strong> Background OS phone call interception, Wi-Fi CSI radio reflection wave model, and automated digital door lock unlocking.
+                <strong>Illustrative only:</strong> Background OS phone call interception, Wi-Fi CSI radio reflection wave model, and automated digital door lock unlocking.
               </p>
               <p>
                 <strong>Escalation Timing:</strong> Normal is 15s per stage. Toggle <strong>3x Fast</strong> to accelerate stages to 5 seconds each.

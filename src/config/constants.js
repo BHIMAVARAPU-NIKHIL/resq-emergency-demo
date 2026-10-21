@@ -1,4 +1,4 @@
-// ResQ public demo configuration and sample data
+// ResQ public simulation configuration and sample data
 
 export const TIMINGS = {
   loudAlarm: 15,
@@ -7,9 +7,9 @@ export const TIMINGS = {
   liveCall: 15
 };
 
-export const DEMO_NON_DIALABLE_PHONE = "00000 00000";
+export const NON_DIALABLE_PHONE_PLACEHOLDER = "00000 00000";
 
-// Approximate city-center coordinates for the fictional demo route.
+// Approximate city-center coordinates for the fictional simulation route.
 export const COORDINATES = {
   member: [17.3850, 78.4867],
   responderStart: [17.3920, 78.4950],
@@ -19,18 +19,18 @@ export const COORDINATES = {
 export const MEMBER_DATA = {
   name: "Bavitha",
   age: 51,
-  address: "Demo Residence, Hyderabad (simulated location)",
-  phone: DEMO_NON_DIALABLE_PHONE,
-  healthProblems: ["Demo health condition"],
-  medicines: ["Demo medication"],
-  tabletLocation: "Demo medicine storage location (sample data only).",
+  address: "Sample Residence, Hyderabad (simulated location)",
+  phone: NON_DIALABLE_PHONE_PLACEHOLDER,
+  healthProblems: ["Sample health condition"],
+  medicines: ["Sample medication"],
+  tabletLocation: "Sample medicine storage location (sample data only).",
   entryAccessCode: "0000",
   vitals: {
     bloodPressure: "120/80 mmHg (sample)",
     heartRate: "72 bpm (sample)",
     oxygenSat: "98% (sample)",
     deviceConnected: true,
-    deviceName: "Sample health sensor (demo)"
+    deviceName: "Sample health sensor"
   },
   homeRooms: [
     { name: "Living room", lastMotion: "Sample only", door: "Simulated", status: "clear" },
@@ -41,17 +41,17 @@ export const MEMBER_DATA = {
   contacts: {
     guardian: {
       name: "Nikhil",
-      relation: "Primary Guardian (demo)",
-      phone: DEMO_NON_DIALABLE_PHONE
+      relation: "Primary Guardian",
+      phone: NON_DIALABLE_PHONE_PLACEHOLDER
     },
     riskSaver: {
-      name: "ResQ Demo Support",
-      role: "Sample support contact (demo)",
-      phone: DEMO_NON_DIALABLE_PHONE
+      name: "ResQ Support",
+      role: "Sample support contact",
+      phone: NON_DIALABLE_PHONE_PLACEHOLDER
     }
   },
   systemStats: {
-    network: "Demo network (simulated)",
+    network: "Simulated network",
     avgResponseTime: "Sample only",
     totalDistanceCovered: "Sample only",
     deviceBattery: "Sample only",
@@ -61,18 +61,18 @@ export const MEMBER_DATA = {
 
 export const RESPONDER_DATA = {
   name: "Akashy",
-  vehicle: "Demo Bike Unit",
-  rating: "Demo rating",
+  vehicle: "Response Bike Unit",
+  rating: "Sample responder rating",
   rescuesCount: 0,
-  phone: DEMO_NON_DIALABLE_PHONE,
-  baseLocation: "Demo response hub",
-  certifications: "First aid profile (demo)"
+  phone: NON_DIALABLE_PHONE_PLACEHOLDER,
+  baseLocation: "Response hub",
+  certifications: "First aid profile (sample)"
 };
 
 export const AMBULANCE_DATA = {
-  service: "Demo Ambulance",
-  vehicleId: "DEMO-AMB-01",
-  type: "Emergency transport (demo)",
-  base: "Demo response hub",
-  phone: DEMO_NON_DIALABLE_PHONE
+  service: "Emergency transport",
+  vehicleId: "RESQ-AMB-01",
+  type: "Emergency transport (simulated)",
+  base: "Response hub",
+  phone: NON_DIALABLE_PHONE_PLACEHOLDER
 };

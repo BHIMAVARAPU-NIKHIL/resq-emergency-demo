@@ -65,7 +65,7 @@ export default function SatelliteMap({
     // Real high-resolution satellite imagery from Esri (Public / No key required)
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
-      attribution: 'Tiles &copy; Esri &mdash; ResQ public demo'
+      attribution: 'Tiles &copy; Esri &mdash; ResQ simulation'
     }).addTo(map);
 
     L.control.zoom({ position: 'topright' }).addTo(map);
@@ -89,7 +89,7 @@ export default function SatelliteMap({
     routeLineRef.current = route;
 
     // Simulated ambulance location
-    const ambIcon = createCustomIcon('#b91c1c', 'Demo ambulance', ambSvg);
+    const ambIcon = createCustomIcon('#b91c1c', 'Emergency transport', ambSvg);
     const ambMarker = L.marker(memberCoords, { icon: ambIcon });
     ambMarkerRef.current = ambMarker;
 
@@ -219,7 +219,7 @@ export default function SatelliteMap({
       <div className={`${height} min-h-64 sm:min-h-80 w-full relative`} ref={containerRef}>
         <div className="absolute top-3 left-3 bg-stone-900/90 text-white px-2.5 py-1 rounded text-xs font-medium z-[400] flex items-center space-x-1.5 border border-stone-700 shadow-sm">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Esri satellite imagery &bull; Demo area</span>
+          <span>Esri satellite imagery &bull; Simulated area</span>
         </div>
         <div className="absolute top-3 right-3 bg-white/95 text-stone-800 px-2 py-0.5 rounded text-[11px] font-mono font-medium z-[400] shadow-sm border border-stone-200">
           Simulated location
@@ -228,7 +228,7 @@ export default function SatelliteMap({
           type="button"
           onClick={fitRoute}
           className="absolute bottom-3 right-3 z-[400] rounded-lg border border-stone-200 bg-white/95 px-3 py-2 text-xs font-semibold text-stone-800 shadow-sm hover:bg-white"
-          aria-label="Fit map to visible demo route"
+          aria-label="Fit map to visible simulated route"
         >
           Fit route
         </button>
@@ -243,7 +243,7 @@ export default function SatelliteMap({
             </span>
             <span className="text-xs text-stone-700 font-medium">{statusMessage}</span>
           </div>
-          <span className="text-[11px] text-stone-500 font-mono hidden sm:inline">Approximate demo area</span>
+          <span className="text-[11px] text-stone-500 font-mono hidden sm:inline">Approximate simulated area</span>
         </div>
       </div>
 
@@ -278,12 +278,12 @@ export default function SatelliteMap({
                 </div>
               </>
             ) : (
-              <span className="text-xs text-stone-400 font-medium">On standby (demo area)</span>
+              <span className="text-xs text-stone-400 font-medium">On standby (simulated area)</span>
             )}
           </div>
         </div>
 
-        {/* Demo ambulance unit */}
+        {/* Emergency transport unit */}
         <div className="pt-2.5 flex items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-full bg-emergency-50 border border-emergency-200 flex items-center justify-center text-emergency-700 flex-shrink-0">
@@ -291,7 +291,7 @@ export default function SatelliteMap({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-bold text-stone-900">Demo Ambulance</span>
+                <span className="text-xs font-bold text-stone-900">Emergency transport</span>
                 <span className="text-[10px] text-emergency-700 bg-emergency-50 px-1.5 py-0.2 rounded font-medium">Sample data</span>
               </div>
               <span className="text-[11px] text-stone-500">Simulated response hub &bull; Sample equipment</span>
@@ -308,7 +308,7 @@ export default function SatelliteMap({
                 </div>
               </>
             ) : (
-              <span className="text-xs text-stone-400 font-medium">Standby at demo hub</span>
+              <span className="text-xs text-stone-400 font-medium">Standby at simulated hub</span>
             )}
           </div>
         </div>

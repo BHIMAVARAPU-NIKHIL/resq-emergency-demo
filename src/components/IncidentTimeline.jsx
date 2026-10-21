@@ -7,7 +7,7 @@ const EVENT_STYLES = {
   info: 'bg-stone-100 text-stone-600 border-stone-200'
 };
 
-export default function IncidentTimeline({ timeline = [], title = 'Shared demo timeline' }) {
+export default function IncidentTimeline({ timeline = [], title = 'Shared incident timeline' }) {
   return (
     <section className="rounded-xl border border-stone-200 bg-white p-4 shadow-xs sm:p-5" aria-label={title}>
       <div className="mb-3 flex items-center justify-between border-b border-stone-100 pb-2">
@@ -15,10 +15,10 @@ export default function IncidentTimeline({ timeline = [], title = 'Shared demo t
           <FileText className="h-4 w-4 text-tealbrand-700" aria-hidden="true" />
           <h3 className="text-xs font-bold uppercase tracking-wider text-stone-800">{title}</h3>
         </div>
-        <span className="text-[11px] text-stone-500">Shared across demo roles</span>
+        <span className="text-[11px] text-stone-500">Shared across all roles</span>
       </div>
       {timeline.length === 0 ? (
-        <p className="py-3 text-xs text-stone-500">No events have been recorded in this demo yet.</p>
+        <p className="py-3 text-xs text-stone-500">No events have been recorded yet.</p>
       ) : (
         <ol className="max-h-64 space-y-1 overflow-y-auto pr-1">
           {timeline.slice(0, 12).map((item) => (
