@@ -59,6 +59,19 @@ export default function ResponderDashboard({
   const isAmbulanceCalled = ['ambulance_dispatched', 'handover_pending'].includes(incidentState.status);
   const isHandoverReady = incidentState.status === 'handover_pending';
   const isResolved = incidentState.status === 'resolved';
+  const routeDirection = (() => {
+    const [latitude, longitude] = incidentState.responderCoords;
+    const [targetLatitude, targetLongitude] = COORDINATES.member;
+    const radians = Math.PI / 180;
+    const deltaLongitude = (targetLongitude - longitude) * radians;
+    const originLatitude = latitude * radians;
+    const destinationLatitude = targetLatitude * radians;
+    const north = Math.sin(deltaLongitude) * Math.cos(destinationLatitude);
+    const east = Math.cos(originLatitude) * Math.sin(destinationLatitude)
+      - Math.sin(originLatitude) * Math.cos(destinationLatitude) * Math.cos(deltaLongitude);
+    const bearing = (Math.atan2(north, east) * 180 / Math.PI + 360) % 360;
+    return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(bearing / 45) % 8];
+  })();
 
   // Request browser permissions when going online
   const handleToggleOnline = async () => {
@@ -473,6 +486,25 @@ export default function ResponderDashboard({
           )}
         </div>
       </section>}
+
+      {incidentState.responderAccepted && (
+        <section className="rounded-xl border border-tealbrand-200 bg-tealbrand-50 p-4" aria-label="Simulated route guidance">
+          <div className="flex items-start gap-3">
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-tealbrand-800" aria-hidden="true" />
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-tealbrand-900">Simulated navigation</h3>
+              <p className="mt-1 text-sm font-semibold text-stone-900">
+                {isEnroute
+                  ? `Head ${routeDirection} toward the simulated residence.`
+                  : isArrived
+                    ? 'You are at the simulated residence.'
+                    : 'Demo route guidance is standing by.'}
+              </p>
+              <p className="mt-1 text-[11px] text-stone-600">Straight-line demo guidance only; no live GPS or road directions are used.</p>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* SATELLITE MAP */}
       {incidentState.responderAccepted && <section aria-label="Route Satellite Map">

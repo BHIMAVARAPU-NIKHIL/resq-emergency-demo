@@ -45,6 +45,7 @@ export default function SatelliteMap({
   const ambMarkerRef = useRef(null);
   const routeLineRef = useRef(null);
   const ambRouteLineRef = useRef(null);
+  const hasAutoFramedRef = useRef(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -102,6 +103,7 @@ export default function SatelliteMap({
     ambRouteLineRef.current = ambRoute;
 
     mapRef.current = map;
+    hasAutoFramedRef.current = false;
 
     const invalidateMapSize = () => map.invalidateSize({ pan: false });
     const timer = setTimeout(() => {
@@ -123,6 +125,25 @@ export default function SatelliteMap({
       mapRef.current = null;
     };
   }, [memberCoords]);
+
+  useEffect(() => {
+    if (!showResponder && !showAmbulance) {
+      hasAutoFramedRef.current = false;
+      return;
+    }
+
+    const map = mapRef.current;
+    if (!map || hasAutoFramedRef.current) return;
+
+    const locations = [memberCoords];
+    if (showResponder && responderCoords) locations.push(responderCoords);
+    if (showAmbulance && ambulanceCoords) locations.push(ambulanceCoords);
+
+    if (locations.length > 1) {
+      map.fitBounds(L.latLngBounds(locations), { padding: [48, 48], maxZoom: 15 });
+      hasAutoFramedRef.current = true;
+    }
+  }, [memberCoords, responderCoords, ambulanceCoords, showResponder, showAmbulance]);
 
   // Update responder location and line
   useEffect(() => {
@@ -178,6 +199,20 @@ export default function SatelliteMap({
     return `~${mins} min${mins > 1 ? 's' : ''}`;
   };
 
+  const fitRoute = () => {
+    const map = mapRef.current;
+    if (!map) return;
+    const locations = [memberCoords];
+    if (showResponder && responderCoords) locations.push(responderCoords);
+    if (showAmbulance && ambulanceCoords) locations.push(ambulanceCoords);
+
+    if (locations.length > 1) {
+      map.fitBounds(L.latLngBounds(locations), { padding: [48, 48], maxZoom: 15 });
+    } else {
+      map.setView(memberCoords, 16);
+    }
+  };
+
   return (
     <div className="rounded border border-stone-200 overflow-hidden bg-white shadow-xs">
       {/* Satellite Map Container */}
@@ -189,6 +224,14 @@ export default function SatelliteMap({
         <div className="absolute top-3 right-3 bg-white/95 text-stone-800 px-2 py-0.5 rounded text-[11px] font-mono font-medium z-[400] shadow-sm border border-stone-200">
           Simulated location
         </div>
+        <button
+          type="button"
+          onClick={fitRoute}
+          className="absolute bottom-3 right-3 z-[400] rounded-lg border border-stone-200 bg-white/95 px-3 py-2 text-xs font-semibold text-stone-800 shadow-sm hover:bg-white"
+          aria-label="Fit map to visible demo route"
+        >
+          Fit route
+        </button>
       </div>
 
       {/* Simulated route status */}
@@ -228,7 +271,7 @@ export default function SatelliteMap({
             {showResponder ? (
               <>
                 <div className="text-xs font-bold text-tealbrand-800 font-mono">
-                  {formatEta(responderEta)}
+                  {responderDistance < 100 ? 'On scene' : formatEta(responderEta)}
                 </div>
                 <div className="text-[11px] text-stone-500 font-mono">
                   {formatDistance(responderDistance)}
@@ -258,7 +301,7 @@ export default function SatelliteMap({
             {showAmbulance ? (
               <>
                 <div className="text-xs font-bold text-emergency-700 font-mono">
-                  {formatEta(ambulanceEta)}
+                  {ambulanceDistance < 100 ? 'On scene' : formatEta(ambulanceEta)}
                 </div>
                 <div className="text-[11px] text-stone-500 font-mono">
                   {formatDistance(ambulanceDistance)}

@@ -24,6 +24,7 @@ Open the local URL printed by Vite. `npm run build` creates a production bundle 
 - This is a simulation only. It does not contact emergency services, dispatch responders, place calls, or provide medical advice. Do not use it for a real emergency.
 - Names, contact details, health information, access codes, locations, incidents, and route movement are sample data only. Displayed contact numbers use `00000 00000`, a non-dialable placeholder. The map uses an approximate demo-area location, not a residence or live GPS position.
 - Any six-digit login code is accepted. The simulated handover code is generated for each dispatch and must match the code shown to the Guardian; neither code is production authentication.
+- Map routes and responder direction cues are illustrative straight-line simulations, not live GPS or turn-by-turn road navigation.
 - Live video signaling uses `BroadcastChannel`, so it only connects tabs on the same browser and origin. Separate phones need a backend signaling service and production identity/access controls.
 - Phone links, payments, emergency call routing, and subscription prices are not functional.
 - Satellite tiles are loaded from Esri and require an internet connection.

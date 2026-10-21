@@ -19,3 +19,8 @@
 - Added a shared read-only incident event timeline to Member, Guardian, and Responder views.
 - Improved Member status messaging and kept responder/ambulance visibility through the resolved state.
 - Reused the configured demo ambulance unit ID in handover instead of a conflicting hard-coded value.
+
+## Phase 5 — Route map and navigation
+- Automatically frames all visible demo units when a response route first appears and adds a manual Fit route control.
+- Added simulated compass direction guidance for the Responder without introducing live location or road-routing services.
+- Corrected arrival labels to show On scene when the corresponding unit is within the arrival threshold.
