@@ -9,3 +9,8 @@
 - Added shared monitoring state with Member controls to start or pause the clearly simulated monitoring flow.
 - Gated fall simulation on monitoring being enabled and an idle incident, with monitoring changes recorded in the shared timeline.
 - Added sample-only Member vitals and a CSI illustration; Guardian sensor status reflects the same shared monitoring state.
+
+## Phase 3 — Design shell and landing
+- Added a shared incident progress stepper and a responsive mobile bottom role navigation while retaining desktop role tabs.
+- Polished the demo landing and role views with reusable gradient image placeholders carrying the planned Phase 6 filenames.
+- Kept incident initiation manual and explicit so the public demo cannot start an alarm automatically.

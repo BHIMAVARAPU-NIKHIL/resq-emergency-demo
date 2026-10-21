@@ -8,6 +8,7 @@ import {
   COORDINATES
 } from '../config/constants';
 import { audioManager } from '../utils/audio';
+import GradientPlaceholder from './GradientPlaceholder';
 import {
   Bike,
   Mic,
@@ -192,6 +193,7 @@ export default function ResponderDashboard({
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6 font-sans">
+      <GradientPlaceholder label="Responder field workflow" filename="responder-field.webp" variant="responder" className="h-24 sm:h-28" />
       {/* Responder Top Bar & Online Switch */}
       <div className="border-b border-stone-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-start space-x-3">

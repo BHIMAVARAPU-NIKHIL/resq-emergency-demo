@@ -6,6 +6,7 @@ import {
   COORDINATES
 } from '../config/constants';
 import { audioManager } from '../utils/audio';
+import GradientPlaceholder from './GradientPlaceholder';
 import {
   AlertTriangle,
   HeartHandshake,
@@ -44,6 +45,7 @@ export default function MemberScreen({
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6 font-sans">
+      <GradientPlaceholder label="Member care overview" filename="member-home.webp" variant="member" className="h-24 sm:h-28" />
       {/* Demo alarm overlay (simulated escalation buffer) */}
       {isAlarmActive && (
         <div className="fixed inset-0 z-50 bg-emergency-700 text-white flex flex-col justify-between p-6 sm:p-10 select-none animate-fadeIn">

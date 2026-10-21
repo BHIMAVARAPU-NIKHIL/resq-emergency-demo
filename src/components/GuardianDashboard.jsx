@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SatelliteMap from './SatelliteMap';
 import { useLiveMedia } from '../utils/liveMedia';
+import GradientPlaceholder from './GradientPlaceholder';
 import {
   MEMBER_DATA,
   RESPONDER_DATA,
@@ -55,6 +56,7 @@ export default function GuardianDashboard({
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6 font-sans">
+      <GradientPlaceholder label="Guardian monitoring dashboard" filename="guardian-monitor.webp" variant="guardian" className="h-24 sm:h-28" />
       {/* Guardian Profile Header */}
       <div className="border-b border-stone-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-start space-x-3">

@@ -8,6 +8,8 @@ import RoleSwitcher from './components/RoleSwitcher';
 import GuardianDashboard from './components/GuardianDashboard';
 import ResponderDashboard from './components/ResponderDashboard';
 import MemberScreen from './components/MemberScreen';
+import IncidentStepper from './components/IncidentStepper';
+import MobileRoleNav from './components/MobileRoleNav';
 
 export default function App() {
   const [currentUserRole, setCurrentUserRole] = useState(() => {
@@ -394,7 +396,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-100 text-stone-900 flex flex-col font-sans selection:bg-tealbrand-100 selection:text-tealbrand-900">
+    <div className="min-h-screen bg-gradient-to-b from-stone-50 to-slate-100 text-stone-900 flex flex-col font-sans selection:bg-tealbrand-100 selection:text-tealbrand-900">
       {/* Role Switcher & Controls Top Bar */}
       <RoleSwitcher
         currentRole={currentUserRole}
@@ -405,8 +407,10 @@ export default function App() {
         onResetDemo={handleResetDemo}
       />
 
+      <IncidentStepper status={incidentState.status} />
+
       {/* Role Specific Screens */}
-      <main className="flex-1">
+      <main className="flex-1 pb-20 lg:pb-0">
         {currentUserRole === 'guardian' && (
           <GuardianDashboard
             incidentState={incidentState}
@@ -436,6 +440,8 @@ export default function App() {
           />
         )}
       </main>
+
+      <MobileRoleNav currentRole={currentUserRole} onRoleChange={handleRoleChange} />
 
       {/* Clean Mobile-first Footer */}
       <footer className="bg-white border-t border-stone-200 py-3 text-center text-xs text-stone-500">

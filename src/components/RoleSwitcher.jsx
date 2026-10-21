@@ -65,7 +65,7 @@ export default function RoleSwitcher({
           </div>
 
           {/* Role Navigation Tabs */}
-          <nav aria-label="Role Navigation" className="w-full lg:w-auto flex items-center gap-1 bg-stone-100 p-1 rounded border border-stone-200">
+          <nav aria-label="Role Navigation" className="hidden lg:flex lg:w-auto items-center gap-1 bg-stone-100 p-1 rounded border border-stone-200">
             <button
               type="button"
               aria-pressed={currentRole === 'guardian'}

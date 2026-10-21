@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Bike, HeartHandshake, ArrowRight, ArrowLeft, CheckCircle2, AlertCircle, Info } from 'lucide-react';
+import GradientPlaceholder from './GradientPlaceholder';
 
 const ROLES = [
   {
@@ -85,6 +86,11 @@ export default function LoginScreen({ onLoginSuccess }) {
   return (
     <div className="min-h-screen bg-stone-100 flex flex-col justify-center items-center px-4 py-8 font-sans">
       <div className="w-full max-w-md bg-white border border-stone-200 rounded-lg p-6 sm:p-8 shadow-xs">
+        <GradientPlaceholder
+          label="ResQ emergency workflow demo"
+          filename="resq-hero.webp"
+          className="mb-5 h-28"
+        />
         {/* App Identity */}
         <div className="mb-6">
           <img src="/resq-logo.svg" alt="ResQ logo" className="w-20 h-20 object-contain mb-3" />
