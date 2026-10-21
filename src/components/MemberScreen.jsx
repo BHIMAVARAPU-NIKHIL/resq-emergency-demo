@@ -19,6 +19,7 @@ import {
 export default function MemberScreen({
   incidentState,
   onTriggerFall,
+  onToggleMonitoring,
   onCancelFall,
   onResetDemo
 }) {
@@ -27,6 +28,9 @@ export default function MemberScreen({
   const isAlarmActive = isBufferLoud || isBufferWait;
   const isPhoneCallActive = ['guardian_call', 'live_call'].includes(incidentState.status);
   const isResponderComing = ['responder_enroute', 'responder_arrived', 'ambulance_dispatched', 'handover_pending'].includes(incidentState.status);
+  const isTerminal = ['cancelled', 'resolved'].includes(incidentState.status);
+  const canManageMonitoring = ['idle', 'cancelled', 'resolved'].includes(incidentState.status);
+  const canTriggerFall = incidentState.monitoringEnabled && incidentState.status === 'idle' && !isAlarmActive;
 
   // Sound manager for the emergency siren during the first 15 seconds
   useEffect(() => {
@@ -151,7 +155,7 @@ export default function MemberScreen({
 
         {/* Member Action: Simulate Fall */}
         <div className="flex items-center space-x-2">
-          {!isAlarmActive && !isResponderComing && (
+          {canTriggerFall && (
             <button
               onClick={onTriggerFall}
               className="px-4 py-2 bg-emergency-600 hover:bg-emergency-700 text-white rounded text-xs font-bold shadow-xs flex items-center space-x-2 transition-colors"
@@ -161,7 +165,7 @@ export default function MemberScreen({
             </button>
           )}
 
-          {isResponderComing && (
+          {(isResponderComing || isTerminal) && (
             <button
               onClick={onResetDemo}
               className="px-3 py-1.5 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded text-xs font-semibold flex items-center space-x-1"
@@ -187,6 +191,60 @@ export default function MemberScreen({
           {isResponderComing ? 'Simulated route' : 'Standby'}
         </span>
       </div>
+
+      <section className="bg-white border border-stone-200 rounded-lg p-4 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3" aria-label="Simulated monitoring controls">
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-stone-700">Member monitoring</h3>
+          <p className="text-xs text-stone-500 mt-1">
+            {incidentState.monitoringEnabled
+              ? 'Illustrative demo sensors are on. No real sensors or medical readings are connected.'
+              : 'Monitoring is paused. Start the simulation before using the fall-alert control.'}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onToggleMonitoring}
+          disabled={!canManageMonitoring}
+          aria-pressed={incidentState.monitoringEnabled}
+          className="px-4 py-2 rounded text-xs font-bold bg-tealbrand-700 text-white hover:bg-tealbrand-800 disabled:bg-stone-300 disabled:text-stone-600 disabled:cursor-not-allowed"
+        >
+          {incidentState.monitoringEnabled ? 'Pause demo monitoring' : 'Start demo monitoring'}
+        </button>
+      </section>
+
+      <section className="bg-white border border-stone-200 rounded-lg p-4 sm:p-5 shadow-xs space-y-3" aria-label="Member sensor and CSI sample data">
+        <div className="flex items-center justify-between gap-2">
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-700">Sample sensor readings</h3>
+            <p className="text-[11px] text-stone-500 mt-1">Illustrative values only; not measured and not medical advice.</p>
+          </div>
+          <span className="text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-1 rounded">
+            Demo only
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          {[
+            ['Blood pressure', MEMBER_DATA.vitals.bloodPressure],
+            ['Heart rate', MEMBER_DATA.vitals.heartRate],
+            ['Oxygen saturation', MEMBER_DATA.vitals.oxygenSat]
+          ].map(([label, value]) => (
+            <div key={label} className="p-3 bg-stone-50 border border-stone-200 rounded">
+              <span className="text-[10px] uppercase font-bold text-stone-500 block">{label}</span>
+              <span className="text-sm font-bold text-stone-900">{value}</span>
+            </div>
+          ))}
+        </div>
+        <div className="rounded-lg p-3 bg-gradient-to-r from-tealbrand-950 via-slate-900 to-indigo-950 text-white">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs font-semibold">Wi-Fi CSI illustration</span>
+            <span className="text-[10px] text-tealbrand-200">No signal is measured</span>
+          </div>
+          <div className="h-12 mt-2 rounded bg-slate-950/70 overflow-hidden relative" aria-hidden="true">
+            <div className="absolute inset-x-0 top-1/2 border-t border-teal-300/80 -translate-y-1/2" />
+            <div className="absolute inset-0 opacity-70 bg-[linear-gradient(110deg,transparent_0%,rgba(45,212,191,0.35)_25%,transparent_45%,rgba(129,140,248,0.45)_62%,transparent_80%)] animate-pulse" />
+          </div>
+        </div>
+      </section>
 
       {/* Satellite Map with Live Responders */}
       <section aria-label="Responder Satellite Map">

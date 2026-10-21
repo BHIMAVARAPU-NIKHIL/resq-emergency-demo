@@ -26,9 +26,9 @@ export const MEMBER_DATA = {
   tabletLocation: "Demo medicine storage location (sample data only).",
   entryAccessCode: "0000",
   vitals: {
-    bloodPressure: "Sample reading",
-    heartRate: "Sample reading",
-    oxygenSat: "Sample reading",
+    bloodPressure: "120/80 mmHg (sample)",
+    heartRate: "72 bpm (sample)",
+    oxygenSat: "98% (sample)",
     deviceConnected: true,
     deviceName: "Sample health sensor (demo)"
   },

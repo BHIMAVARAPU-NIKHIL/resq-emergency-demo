@@ -88,8 +88,11 @@ export default function App() {
 
   // Fall Alert Triggered on Member screen
   const handleTriggerFall = () => {
+    const currentState = syncManager.getState();
+    if (!currentState.monitoringEnabled || currentState.status !== 'idle') return;
+
     audioManager.stopAll();
-    const duration = getEffectiveDuration(TIMINGS.loudAlarm, incidentState.speedMultiplier);
+    const duration = getEffectiveDuration(TIMINGS.loudAlarm, currentState.speedMultiplier);
 
     addTimelineEvent('Fall impact detected at the simulated residence (Bedroom sensor)', 'alert');
     addTimelineEvent(`Initiated 30s buffer. First half: Loud siren sounding on member phone (${duration}s)`, 'alert');
@@ -100,6 +103,29 @@ export default function App() {
       activeStep: 'loudAlarm',
       fallTriggeredAt: Date.now(),
       stepRemainingSeconds: duration
+    }));
+  };
+
+  const handleToggleMonitoring = () => {
+    const currentState = syncManager.getState();
+    const incidentInProgress = !['idle', 'cancelled', 'resolved'].includes(currentState.status);
+    if (incidentInProgress) return;
+
+    const monitoringEnabled = !currentState.monitoringEnabled;
+    syncManager.updateState((prev) => ({
+      ...prev,
+      monitoringEnabled,
+      timeline: [
+        {
+          id: `evt-${Date.now()}-monitoring`,
+          timestamp: new Date().toLocaleTimeString('en-IN', { hour12: false }),
+          message: monitoringEnabled
+            ? 'Simulated monitoring started by the Member.'
+            : 'Simulated monitoring paused by the Member.',
+          status: 'info'
+        },
+        ...prev.timeline
+      ]
     }));
   };
 
@@ -404,6 +430,7 @@ export default function App() {
           <MemberScreen
             incidentState={incidentState}
             onTriggerFall={handleTriggerFall}
+            onToggleMonitoring={handleToggleMonitoring}
             onCancelFall={handleCancelFall}
             onResetDemo={handleResetDemo}
           />

@@ -79,7 +79,7 @@ export default function GuardianDashboard({
             <span className="text-[10px] uppercase font-bold text-stone-400 block">Demo sensor simulation</span>
             <span className="text-xs font-semibold text-emerald-700 flex items-center space-x-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              <span>Simulated (not connected)</span>
+              <span>{incidentState.monitoringEnabled ? 'Demo monitoring active (not connected)' : 'Demo monitoring paused'}</span>
             </span>
           </div>
         </div>
@@ -422,7 +422,7 @@ export default function GuardianDashboard({
               Home Monitor &bull; Simulated sensors
             </h3>
           </div>
-          <span className="text-xs text-stone-500">4 simulated sensors</span>
+          <span className="text-xs text-stone-500">{incidentState.monitoringEnabled ? '4 simulated sensors active' : '4 simulated sensors paused'}</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">

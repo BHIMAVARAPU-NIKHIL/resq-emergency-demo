@@ -10,6 +10,7 @@ export const INITIAL_INCIDENT_STATE = {
   activeStep: null, // 'loudAlarm' | 'memberWait' | 'guardianCall' | 'liveCall' | 'responder' | 'ambulance'
   stepRemainingSeconds: 0,
   speedMultiplier: 1, // 1 for normal, 3 for 3x fast demo
+  monitoringEnabled: false,
 
   // Responder telemetry
   responderCoords: [17.3920, 78.4950],
@@ -39,7 +40,7 @@ export const INITIAL_INCIDENT_STATE = {
     {
       id: 'init-1',
       timestamp: new Date().toLocaleTimeString('en-IN', { hour12: false }),
-      message: 'Public demo online & monitoring the simulated residence',
+      message: 'Public demo online and standing by in the simulated area',
       status: 'info'
     }
   ]
