@@ -14,3 +14,8 @@
 - Added a shared incident progress stepper and a responsive mobile bottom role navigation while retaining desktop role tabs.
 - Polished the demo landing and role views with reusable gradient image placeholders carrying the planned Phase 6 filenames.
 - Kept incident initiation manual and explicit so the public demo cannot start an alarm automatically.
+
+## Phase 4 — Role screen workflows
+- Added a shared read-only incident event timeline to Member, Guardian, and Responder views.
+- Improved Member status messaging and kept responder/ambulance visibility through the resolved state.
+- Reused the configured demo ambulance unit ID in handover instead of a conflicting hard-coded value.

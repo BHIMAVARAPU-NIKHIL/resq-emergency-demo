@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import SatelliteMap from './SatelliteMap';
 import { useLiveMedia } from '../utils/liveMedia';
 import GradientPlaceholder from './GradientPlaceholder';
+import IncidentTimeline from './IncidentTimeline';
 import {
   MEMBER_DATA,
   RESPONDER_DATA,
@@ -42,7 +43,7 @@ export default function GuardianDashboard({
   }, [remoteStream]);
 
   const isIncidentActive = !['idle', 'resolved', 'cancelled'].includes(incidentState.status);
-  const isResponderEnroute = ['responder_enroute', 'responder_arrived', 'ambulance_dispatched', 'handover_pending'].includes(incidentState.status);
+  const isResponderEnroute = ['responder_enroute', 'responder_arrived', 'ambulance_dispatched', 'handover_pending', 'resolved'].includes(incidentState.status);
   const isGuardianCalling = incidentState.status === 'guardian_call';
   const incidentSummary = {
     idle: { title: 'Demo is standing by', detail: 'No real sensors or monitoring are connected.', tone: 'border-emerald-200 bg-emerald-50 text-emerald-900' },
@@ -197,6 +198,8 @@ export default function GuardianDashboard({
           <div className="font-mono text-2xl font-bold tracking-widest text-amber-950 mt-2">{incidentState.handoverOtp}</div>
         </section>
       )}
+
+      <IncidentTimeline timeline={incidentState.timeline} title="Guardian incident timeline" />
 
       <section className="bg-tealbrand-900 text-white rounded-lg p-4 sm:p-5 shadow-xs" aria-label="ResQ subscription plans">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">

@@ -9,6 +9,7 @@ import {
 } from '../config/constants';
 import { audioManager } from '../utils/audio';
 import GradientPlaceholder from './GradientPlaceholder';
+import IncidentTimeline from './IncidentTimeline';
 import {
   Bike,
   Mic,
@@ -727,7 +728,7 @@ export default function ResponderDashboard({
               <KeyRound className="w-4 h-4" />
               <span>Ambulance Arrived &bull; Handover Verification</span>
             </span>
-            <span className="text-xs font-mono text-stone-300">Unit: ALS-HYD-408</span>
+            <span className="text-xs font-mono text-stone-300">Unit: {AMBULANCE_DATA.vehicleId}</span>
           </div>
 
           <div>
@@ -861,6 +862,7 @@ export default function ResponderDashboard({
           </div>
         </div>
       </section>}
+      <IncidentTimeline timeline={incidentState.timeline} title="Responder incident timeline" />
     </div>
   );
 }

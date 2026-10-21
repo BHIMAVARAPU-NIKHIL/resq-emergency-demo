@@ -7,13 +7,13 @@ import {
 } from '../config/constants';
 import { audioManager } from '../utils/audio';
 import GradientPlaceholder from './GradientPlaceholder';
+import IncidentTimeline from './IncidentTimeline';
 import {
   AlertTriangle,
   HeartHandshake,
   CheckCircle2,
   ShieldAlert,
   PhoneCall,
-  FileText,
   RefreshCw
 } from 'lucide-react';
 
@@ -28,10 +28,24 @@ export default function MemberScreen({
   const isBufferWait = incidentState.status === 'buffer_wait';
   const isAlarmActive = isBufferLoud || isBufferWait;
   const isPhoneCallActive = ['guardian_call', 'live_call'].includes(incidentState.status);
-  const isResponderComing = ['responder_enroute', 'responder_arrived', 'ambulance_dispatched', 'handover_pending'].includes(incidentState.status);
+  const isResponderComing = ['responder_enroute', 'responder_arrived', 'ambulance_dispatched', 'handover_pending', 'resolved'].includes(incidentState.status);
   const isTerminal = ['cancelled', 'resolved'].includes(incidentState.status);
   const canManageMonitoring = ['idle', 'cancelled', 'resolved'].includes(incidentState.status);
   const canTriggerFall = incidentState.monitoringEnabled && incidentState.status === 'idle' && !isAlarmActive;
+  const incidentStatus = {
+    idle: 'Standing by — no active demo incident',
+    buffer_loud: 'Fall alert — loud alarm buffer',
+    buffer_wait: 'Fall alert — member response window',
+    guardian_call: 'Guardian notification simulation',
+    live_call: 'Live call simulation',
+    responder_alerted: 'Responder dispatch available',
+    responder_enroute: 'Responder en route',
+    responder_arrived: 'Responder on scene',
+    ambulance_dispatched: 'Ambulance simulation en route',
+    handover_pending: 'Handover verification pending',
+    resolved: 'Demo incident complete',
+    cancelled: 'Demo alert cancelled'
+  }[incidentState.status] || 'Demo incident status unavailable';
 
   // Sound manager for the emergency siren during the first 15 seconds
   useEffect(() => {
@@ -184,15 +198,25 @@ export default function MemberScreen({
         <div className="flex items-center space-x-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
           <span className="font-semibold text-stone-800">
-            {isResponderComing
-              ? 'Demo incident active &bull; No evidence is recorded'
-              : 'Demo sensors active &bull; Simulated data only'}
+            {isTerminal
+              ? incidentState.status === 'resolved' ? 'Demo incident complete' : 'Demo alert cancelled'
+              : incidentState.status === 'idle'
+                ? incidentState.monitoringEnabled ? 'Demo monitoring active' : 'Demo monitoring paused'
+                : 'Demo incident active &bull; No evidence is recorded'}
           </span>
         </div>
         <span className="text-[11px] text-stone-500 font-mono">
           {isResponderComing ? 'Simulated route' : 'Standby'}
         </span>
       </div>
+
+      <section className="rounded-xl border border-tealbrand-200 bg-tealbrand-50 p-4" aria-live="polite" aria-label="Shared incident status">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-tealbrand-800">Shared incident status</span>
+        <p className="mt-1 text-sm font-bold text-tealbrand-950">{incidentStatus}</p>
+        {incidentState.stepRemainingSeconds > 0 && (
+          <p className="mt-1 text-xs text-tealbrand-800">Next simulated step in {incidentState.stepRemainingSeconds} seconds.</p>
+        )}
+      </section>
 
       <section className="bg-white border border-stone-200 rounded-lg p-4 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3" aria-label="Simulated monitoring controls">
         <div>
@@ -276,45 +300,7 @@ export default function MemberScreen({
         />
       </section>
 
-      {/* Simulated escalation timeline */}
-      <section className="bg-white border border-stone-200 rounded-lg p-4 sm:p-5 shadow-xs space-y-3">
-        <div className="flex items-center justify-between border-b border-stone-100 pb-2">
-          <div className="flex items-center space-x-2">
-            <FileText className="w-4 h-4 text-tealbrand-700" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-800">
-              Demo event timeline
-            </h3>
-          </div>
-          <span className="text-[11px] text-stone-500">Sample timestamps</span>
-        </div>
-
-        <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-          {incidentState.timeline.map((item) => (
-            <div
-              key={item.id}
-              className="text-xs flex items-start space-x-2.5 py-1.5 border-b border-stone-100 last:border-none"
-            >
-              <span className="font-mono text-[11px] text-stone-400 flex-shrink-0 mt-0.5">
-                {item.timestamp}
-              </span>
-              <div className="flex-1">
-                <span className="text-stone-800 font-medium">{item.message}</span>
-              </div>
-              <span
-                className={`text-[10px] font-semibold px-1.5 py-0.2 rounded uppercase ${
-                  item.status === 'alert'
-                    ? 'bg-emergency-50 text-emergency-700 border border-emergency-200'
-                    : item.status === 'success'
-                    ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                    : 'bg-stone-100 text-stone-600'
-                }`}
-              >
-                {item.status}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <IncidentTimeline timeline={incidentState.timeline} title="Member incident timeline" />
 
       {/* Sample medicine storage reminder */}
       <section className="bg-white border border-stone-200 rounded-lg p-4 shadow-xs space-y-2">
