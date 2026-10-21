@@ -172,7 +172,7 @@ export default function GuardianDashboard({
               <span>
                 <span className="text-[10px] uppercase font-bold text-stone-400 block">Accepted responder</span>
                 <span className="text-sm font-bold text-stone-900">{RESPONDER_DATA.name}</span>
-                <span className="text-xs text-stone-600 block">Phone not configured in public demo</span>
+                <span className="text-xs text-stone-600 block">Demo phone: {RESPONDER_DATA.phone} (not dialable)</span>
               </span>
             </div>
             {incidentState.ambulanceDispatched && (
@@ -180,7 +180,7 @@ export default function GuardianDashboard({
                 <span>
                   <span className="text-[10px] uppercase font-bold text-stone-400 block">Dispatched ambulance</span>
                   <span className="text-sm font-bold text-stone-900">{AMBULANCE_DATA.service}</span>
-                  <span className="text-xs text-stone-600 block">Phone not configured in public demo</span>
+                  <span className="text-xs text-stone-600 block">Demo phone: {AMBULANCE_DATA.phone} (not dialable)</span>
                 </span>
               </div>
             )}
@@ -568,7 +568,7 @@ export default function GuardianDashboard({
               <span className="text-sm font-bold text-stone-900">{MEMBER_DATA.contacts.guardian.name}</span>
               <span className="text-xs text-stone-500 block">{MEMBER_DATA.contacts.guardian.relation}</span>
             </div>
-            <span className="text-xs text-stone-500">Phone not configured</span>
+            <span className="text-xs text-stone-500">Demo phone: {MEMBER_DATA.contacts.guardian.phone} (not dialable)</span>
           </div>
 
           {/* (b) Risk Saver */}
@@ -578,7 +578,7 @@ export default function GuardianDashboard({
               <span className="text-sm font-bold text-stone-900">{MEMBER_DATA.contacts.riskSaver.name}</span>
               <span className="text-xs text-stone-500 block">{MEMBER_DATA.contacts.riskSaver.role}</span>
             </div>
-            <span className="text-xs text-stone-500">Phone not configured</span>
+            <span className="text-xs text-stone-500">Demo phone: {MEMBER_DATA.contacts.riskSaver.phone} (not dialable)</span>
           </div>
         </div>
       </section>

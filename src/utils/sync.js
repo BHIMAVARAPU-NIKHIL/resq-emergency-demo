@@ -27,7 +27,7 @@ export const INITIAL_INCIDENT_STATE = {
   ambulanceArrived: false,
 
   // Handover OTP
-  handoverOtp: '123456',
+  handoverOtp: null,
   handoverCompleted: false,
 
   // Guardian call state

@@ -168,20 +168,47 @@ export default function App() {
       status: 'ambulance_dispatched',
       ambulanceDispatched: true,
       ambulanceDistanceMeters: 2200,
-      ambulanceEtaSeconds: 360
+      ambulanceEtaSeconds: 360,
+      handoverOtp: String(Math.floor(Math.random() * 1_000_000)).padStart(6, '0'),
+      handoverCompleted: false
     }));
   };
 
   // Submit Handover OTP
-  const handleSubmitHandoverOtp = () => {
-    addTimelineEvent('Demo ambulance team verified the handover code.', 'success');
-    addTimelineEvent('Demo rescue mission completed successfully.', 'success');
+  const handleSubmitHandoverOtp = (submittedOtp) => {
+    if (!/^\d{6}$/.test(submittedOtp)) return false;
 
-    syncManager.updateState((prev) => ({
-      ...prev,
-      status: 'resolved',
-      handoverCompleted: true
-    }));
+    let verified = false;
+    syncManager.updateState((prev) => {
+      if (prev.status !== 'handover_pending' || submittedOtp !== prev.handoverOtp) {
+        return prev;
+      }
+
+      verified = true;
+      const timestamp = new Date().toLocaleTimeString('en-IN', { hour12: false });
+      const events = [
+        {
+          id: `evt-${Date.now()}-handover`,
+          timestamp,
+          message: 'Demo ambulance team verified the handover code.',
+          status: 'success'
+        },
+        {
+          id: `evt-${Date.now()}-resolved`,
+          timestamp,
+          message: 'Demo rescue mission completed successfully.',
+          status: 'success'
+        }
+      ];
+
+      return {
+        ...prev,
+        status: 'resolved',
+        handoverCompleted: true,
+        timeline: [...events, ...prev.timeline]
+      };
+    });
+    return verified;
   };
 
   // Responder marks tablets located

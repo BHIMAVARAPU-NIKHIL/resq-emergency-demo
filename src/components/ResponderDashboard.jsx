@@ -180,13 +180,14 @@ export default function ResponderDashboard({
 
   const handleVerifyOtp = (e) => {
     e.preventDefault();
-    if (enteredOtp.trim() === incidentState.handoverOtp) {
-      setOtpError('');
-      audioManager.playSuccessChime();
-      onSubmitHandoverOtp();
-    } else {
+    if (!/^\d{6}$/.test(enteredOtp) || !onSubmitHandoverOtp(enteredOtp)) {
       setOtpError('That handover code does not match. Please verify the code with the Guardian.');
+      return;
     }
+
+    setOtpError('');
+    setEnteredOtp('');
+    audioManager.playSuccessChime();
   };
 
   return (
@@ -744,7 +745,10 @@ export default function ResponderDashboard({
                 type="text"
                 maxLength={6}
                 value={enteredOtp}
-                onChange={(e) => setEnteredOtp(e.target.value)}
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                pattern="[0-9]{6}"
+                onChange={(e) => setEnteredOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 placeholder="Code from Guardian"
                 className="w-full text-center text-lg tracking-widest font-mono py-2 rounded bg-stone-950 text-white border border-stone-700 focus:outline-none focus:border-emerald-400"
               />

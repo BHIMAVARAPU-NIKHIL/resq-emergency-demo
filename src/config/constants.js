@@ -7,6 +7,8 @@ export const TIMINGS = {
   liveCall: 15
 };
 
+export const DEMO_NON_DIALABLE_PHONE = "00000 00000";
+
 // Approximate city-center coordinates for the fictional demo route.
 export const COORDINATES = {
   member: [17.3850, 78.4867],
@@ -18,7 +20,7 @@ export const MEMBER_DATA = {
   name: "Bavitha",
   age: 51,
   address: "Demo Residence, Hyderabad (simulated location)",
-  phone: "",
+  phone: DEMO_NON_DIALABLE_PHONE,
   healthProblems: ["Demo health condition"],
   medicines: ["Demo medication"],
   tabletLocation: "Demo medicine storage location (sample data only).",
@@ -40,12 +42,12 @@ export const MEMBER_DATA = {
     guardian: {
       name: "Nikhil",
       relation: "Primary Guardian (demo)",
-      phone: ""
+      phone: DEMO_NON_DIALABLE_PHONE
     },
     riskSaver: {
       name: "ResQ Demo Support",
       role: "Sample support contact (demo)",
-      phone: ""
+      phone: DEMO_NON_DIALABLE_PHONE
     }
   },
   systemStats: {
@@ -62,7 +64,7 @@ export const RESPONDER_DATA = {
   vehicle: "Demo Bike Unit",
   rating: "Demo rating",
   rescuesCount: 0,
-  phone: "",
+  phone: DEMO_NON_DIALABLE_PHONE,
   baseLocation: "Demo response hub",
   certifications: "First aid profile (demo)"
 };
@@ -72,5 +74,5 @@ export const AMBULANCE_DATA = {
   vehicleId: "DEMO-AMB-01",
   type: "Emergency transport (demo)",
   base: "Demo response hub",
-  phone: ""
+  phone: DEMO_NON_DIALABLE_PHONE
 };
