@@ -57,6 +57,13 @@ export const INITIAL_INCIDENT_STATE = {
     residence: 'india',
     smsAlerts: true,
     whatsappAlerts: true
+  },
+  csiState: {
+    status: 'idle',
+    stage: -1,
+    scenario: 'movement',
+    activity: '',
+    completedAt: ''
   }
 };
 
@@ -147,6 +154,7 @@ class RealtimeSyncManager {
       ...INITIAL_INCIDENT_STATE,
       healthCheckups: previousState.healthCheckups,
       guardianProfile: previousState.guardianProfile,
+      csiState: INITIAL_INCIDENT_STATE.csiState,
       timeline: [
         {
           id: `rst-${Date.now()}`,
@@ -189,6 +197,10 @@ class RealtimeSyncManager {
       guardianProfile: {
         ...INITIAL_INCIDENT_STATE.guardianProfile,
         ...(state.guardianProfile || {})
+      },
+      csiState: {
+        ...INITIAL_INCIDENT_STATE.csiState,
+        ...(state.csiState || {})
       },
       timeline: Array.isArray(state.timeline) ? state.timeline : INITIAL_INCIDENT_STATE.timeline
     };

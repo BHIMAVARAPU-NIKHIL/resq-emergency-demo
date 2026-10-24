@@ -25,6 +25,7 @@ export default function App() {
   const [incidentState, setIncidentState] = useState(() => syncManager.getState());
   const timerRef = useRef(null);
   const telemetryRef = useRef(null);
+  const csiTimerRef = useRef([]);
 
   // Sync listener across tabs via BroadcastChannel & localStorage
   useEffect(() => {
@@ -32,6 +33,10 @@ export default function App() {
       setIncidentState(newState);
     });
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => () => {
+    csiTimerRef.current.forEach(clearTimeout);
   }, []);
 
   const getEffectiveDuration = (seconds, multiplier) => {
@@ -109,6 +114,53 @@ export default function App() {
     }));
   };
 
+  const handleRunCsiScan = (scenario) => {
+    const currentState = syncManager.getState();
+    if (currentState.csiState.status === 'scanning') return false;
+
+    csiTimerRef.current.forEach(clearTimeout);
+    csiTimerRef.current = [];
+    syncManager.updateState((prev) => ({
+      ...prev,
+      csiState: {
+        status: 'scanning',
+        stage: 0,
+        scenario,
+        activity: '',
+        completedAt: ''
+      }
+    }));
+
+    [1, 2, 3].forEach((stage, index) => {
+      const timeoutId = setTimeout(() => {
+        syncManager.updateState((prev) => ({
+          ...prev,
+          csiState: { ...prev.csiState, stage }
+        }));
+      }, (index + 1) * 900);
+      csiTimerRef.current.push(timeoutId);
+    });
+
+    const finishTimeout = setTimeout(() => {
+      const activity = scenario === 'possible_fall'
+        ? 'Possible fall-like movement pattern (mock)'
+        : 'Normal movement pattern (mock)';
+      syncManager.updateState((prev) => ({
+        ...prev,
+        csiState: {
+          ...prev.csiState,
+          status: 'complete',
+          stage: 3,
+          activity,
+          completedAt: new Date().toISOString()
+        }
+      }));
+      csiTimerRef.current = [];
+    }, 3600);
+    csiTimerRef.current.push(finishTimeout);
+    return true;
+  };
+
   // 3x Fast Speed Toggle
   const handleToggleSpeed = () => {
     const newMultiplier = incidentState.speedMultiplier === 1 ? 3 : 1;
@@ -123,6 +175,8 @@ export default function App() {
     audioManager.stopAll();
     clearInterval(timerRef.current);
     clearInterval(telemetryRef.current);
+    csiTimerRef.current.forEach(clearTimeout);
+    csiTimerRef.current = [];
     const reset = syncManager.resetState();
     setIncidentState(reset);
   };
@@ -467,6 +521,7 @@ export default function App() {
               onBookCheckup={handleBookCheckup}
               guardianProfile={incidentState.guardianProfile}
               onUpdateGuardianProfile={handleUpdateGuardianProfile}
+              onRunCsiScan={handleRunCsiScan}
             />
           )}
 
@@ -487,6 +542,7 @@ export default function App() {
               incidentState={incidentState}
               healthCheckups={incidentState.healthCheckups}
               onBookCheckup={handleBookCheckup}
+              onRunCsiScan={handleRunCsiScan}
               onTriggerFall={handleTriggerFall}
               onToggleMonitoring={handleToggleMonitoring}
               onCancelFall={handleCancelFall}

@@ -9,6 +9,7 @@ import { audioManager } from '../utils/audio';
 import GradientPlaceholder from './GradientPlaceholder';
 import IncidentTimeline from './IncidentTimeline';
 import HealthCheckupCard from './HealthCheckupCard';
+import WifiCsiExplanation from './WifiCsiExplanation';
 import {
   AlertTriangle,
   HeartHandshake,
@@ -25,7 +26,8 @@ export default function MemberScreen({
   onCancelFall,
   onResetScenario,
   healthCheckups,
-  onBookCheckup
+  onBookCheckup,
+  onRunCsiScan
 }) {
   const isBufferLoud = incidentState.status === 'buffer_loud';
   const isBufferWait = incidentState.status === 'buffer_wait';
@@ -275,6 +277,11 @@ export default function MemberScreen({
             <div className="absolute inset-0 opacity-70 bg-[linear-gradient(110deg,transparent_0%,rgba(45,212,191,0.35)_25%,transparent_45%,rgba(129,140,248,0.45)_62%,transparent_80%)] animate-pulse" />
           </div>
         </div>
+        <WifiCsiExplanation
+          csiState={incidentState.csiState}
+          onRun={onRunCsiScan}
+          canControl
+        />
       </section>
 
       {/* Satellite Map with Live Responders */}

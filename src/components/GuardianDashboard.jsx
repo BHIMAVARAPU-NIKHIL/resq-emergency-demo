@@ -5,6 +5,7 @@ import GradientPlaceholder from './GradientPlaceholder';
 import IncidentTimeline from './IncidentTimeline';
 import HealthCheckupCard from './HealthCheckupCard';
 import RevenueSplit from './RevenueSplit';
+import WifiCsiExplanation from './WifiCsiExplanation';
 import {
   MEMBER_DATA,
   RESPONDER_DATA,
@@ -29,6 +30,7 @@ export default function GuardianDashboard({
   onBookCheckup,
   guardianProfile,
   onUpdateGuardianProfile,
+  onRunCsiScan,
 }) {
   const [csiWaveOffset, setCsiWaveOffset] = useState(0);
   const [memberLocalTime, setMemberLocalTime] = useState(() => new Intl.DateTimeFormat('en-IN', {
@@ -546,7 +548,7 @@ export default function GuardianDashboard({
               Wi-Fi CSI (Channel State Information)
             </h3>
             <span className="text-[10px] font-semibold bg-stone-100 text-stone-600 px-1.5 py-0.2 rounded border border-stone-200">
-              Coming soon &bull; Simulation
+              Concept only
             </span>
           </div>
           <span className="text-xs font-mono text-tealbrand-800 font-semibold">Illustration only</span>
@@ -635,6 +637,7 @@ export default function GuardianDashboard({
             </span>
           </div>
         </div>
+        <WifiCsiExplanation csiState={incidentState.csiState} onRun={onRunCsiScan} />
       </section>
 
       {/* Sample contacts */}
