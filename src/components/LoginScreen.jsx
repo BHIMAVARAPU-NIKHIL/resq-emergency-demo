@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Bike, HeartHandshake, ArrowRight, ArrowLeft, CheckCircle2, AlertCircle, Info } from 'lucide-react';
 import GradientPlaceholder from './GradientPlaceholder';
+import PartnerOverview from './PartnerOverview';
 
 const ROLES = [
   {
@@ -84,7 +85,7 @@ export default function LoginScreen({ onLoginSuccess }) {
   };
 
   return (
-    <div className="min-h-screen bg-stone-100 flex flex-col justify-center items-center px-4 py-8 font-sans">
+    <div className="min-h-screen bg-stone-100 flex flex-col items-center px-4 py-8 font-sans">
       <div className="w-full max-w-md bg-white border border-stone-200 rounded-lg p-6 sm:p-8 shadow-xs">
         <GradientPlaceholder
           label="ResQ emergency response simulation"
@@ -246,6 +247,27 @@ export default function LoginScreen({ onLoginSuccess }) {
           </form>
         )}
       </div>
+
+      <main className="mt-5 w-full max-w-4xl space-y-4">
+        <section className="rounded-lg border border-tealbrand-200 bg-tealbrand-50 p-4 sm:p-5">
+          <p className="text-sm font-bold text-tealbrand-950">Parents in India, you abroad? ResQ keeps a live watch and sends proof.</p>
+          <p className="mt-1 text-xs text-tealbrand-800">Illustrative NRI Guardian view with Member local time and mock SMS/WhatsApp alerts.</p>
+        </section>
+        <section className="rounded-lg border border-stone-200 bg-white p-4 shadow-xs sm:p-5">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-tealbrand-700">One annual plan</p>
+              <h2 className="mt-1 text-sm font-bold text-stone-900">ResQ Safe + Health</h2>
+              <p className="mt-1 text-sm font-bold text-stone-900">₹4500 per year</p>
+              <p className="mt-1 text-xs text-stone-600">Emergency monitoring, rider dispatch, helpline check-in, caretaker dashboard, and 3 annual health check-ups with doctor consults.</p>
+            </div>
+            <a href="/business-model" className="rounded border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-stone-700 hover:bg-stone-100">
+              How the plan works
+            </a>
+          </div>
+        </section>
+        <PartnerOverview />
+      </main>
 
       {/* Footer info */}
       <div className="mt-4 text-center text-xs text-stone-500 max-w-sm">

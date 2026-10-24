@@ -205,6 +205,12 @@ export default function ResponderDashboard({
     audioManager.playSuccessChime();
   };
 
+  const completedResponses = incidentState.status === 'resolved' ? 1 : 0;
+  const responseEarnings = completedResponses * 300;
+  const lifeSaveBonus = completedResponses * 500;
+  const standbyBonus = isOnline ? 350 : 0;
+  const monthlyEarnings = responseEarnings + lifeSaveBonus + standbyBonus;
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6 font-sans">
       <GradientPlaceholder label="Responder field workflow" filename="responder-field.webp" variant="responder" className="h-24 sm:h-28" />
@@ -248,6 +254,39 @@ export default function ResponderDashboard({
           </button>
         </div>
       </div>
+
+      <section className="rounded-lg border border-stone-200 bg-white p-4 shadow-xs sm:p-5" aria-labelledby="responder-earnings-title">
+        <div className="flex flex-wrap items-start justify-between gap-2 border-b border-stone-100 pb-3">
+          <div>
+            <h3 id="responder-earnings-title" className="text-sm font-bold text-stone-900">ResQ mode earnings</h3>
+            <p className="mt-1 text-xs text-stone-500">Illustrative rider earnings only.</p>
+          </div>
+          <span className={`rounded border px-2 py-1 text-[10px] font-bold ${isOnline ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-stone-200 bg-stone-50 text-stone-600'}`}>
+            ResQ mode: {isOnline ? 'On' : 'Off'}
+          </span>
+        </div>
+        <dl className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <div className="rounded border border-stone-100 bg-stone-50 p-3">
+            <dt className="text-[10px] font-bold uppercase tracking-wide text-stone-500">Per-response fee (demo)</dt>
+            <dd className="mt-1 text-sm font-bold text-stone-900">Demo ₹300 per response</dd>
+            <dd className="mt-0.5 text-[11px] text-stone-500">{completedResponses} completed this month · ₹{responseEarnings} demo total</dd>
+          </div>
+          <div className="rounded border border-stone-100 bg-stone-50 p-3">
+            <dt className="text-[10px] font-bold uppercase tracking-wide text-stone-500">Life-save bonus (demo)</dt>
+            <dd className="mt-1 text-sm font-bold text-stone-900">Demo ₹500 per verified save</dd>
+            <dd className="mt-0.5 text-[11px] text-stone-500">₹{lifeSaveBonus} demo this month</dd>
+          </div>
+          <div className="rounded border border-stone-100 bg-stone-50 p-3">
+            <dt className="text-[10px] font-bold uppercase tracking-wide text-stone-500">Monthly standby bonus (demo)</dt>
+            <dd className="mt-1 text-sm font-bold text-stone-900">Demo ₹350 while ResQ mode is on</dd>
+            <dd className="mt-0.5 text-[11px] text-stone-500">₹{standbyBonus} demo this month</dd>
+          </div>
+          <div className="rounded border border-tealbrand-200 bg-tealbrand-50 p-3">
+            <dt className="text-[10px] font-bold uppercase tracking-wide text-tealbrand-800">Total this month (demo)</dt>
+            <dd className="mt-1 text-lg font-bold text-tealbrand-950">Demo ₹{monthlyEarnings}</dd>
+          </div>
+        </dl>
+      </section>
 
       {!incidentState.responderAccepted && incidentState.status !== 'responder_alerted' && (
         <section className="bg-white border border-stone-200 rounded-lg p-5 sm:p-6 shadow-xs" aria-label="Responder standby status">

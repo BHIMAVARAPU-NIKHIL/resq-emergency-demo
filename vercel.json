@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/business-model",
+      "destination": "/"
+    }
+  ]
+}

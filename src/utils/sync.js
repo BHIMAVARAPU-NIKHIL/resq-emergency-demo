@@ -43,7 +43,21 @@ export const INITIAL_INCIDENT_STATE = {
       message: 'ResQ online and standing by in the simulated area',
       status: 'info'
     }
-  ]
+  ],
+  healthCheckups: {
+    usedCount: 0,
+    nextDate: '',
+    nextTime: '',
+    hospital: 'City Care Hospital (sample)',
+    reminder: '',
+    memberName: 'Bavitha',
+    reports: []
+  },
+  guardianProfile: {
+    residence: 'india',
+    smsAlerts: true,
+    whatsappAlerts: true
+  }
 };
 
 class RealtimeSyncManager {
@@ -128,8 +142,11 @@ class RealtimeSyncManager {
   }
 
   resetState() {
+    const previousState = this.getState();
     const reset = {
       ...INITIAL_INCIDENT_STATE,
+      healthCheckups: previousState.healthCheckups,
+      guardianProfile: previousState.guardianProfile,
       timeline: [
         {
           id: `rst-${Date.now()}`,
@@ -160,10 +177,24 @@ class RealtimeSyncManager {
   }
 
   sanitizeState(state) {
-    if (!state || !Array.isArray(state.timeline)) return state;
-    return {
+    if (!state || typeof state !== 'object') return state;
+    const normalized = {
+      ...INITIAL_INCIDENT_STATE,
       ...state,
-      timeline: state.timeline.map((event) => (
+      healthCheckups: {
+        ...INITIAL_INCIDENT_STATE.healthCheckups,
+        ...(state.healthCheckups || {}),
+        reports: Array.isArray(state.healthCheckups?.reports) ? state.healthCheckups.reports : []
+      },
+      guardianProfile: {
+        ...INITIAL_INCIDENT_STATE.guardianProfile,
+        ...(state.guardianProfile || {})
+      },
+      timeline: Array.isArray(state.timeline) ? state.timeline : INITIAL_INCIDENT_STATE.timeline
+    };
+    return {
+      ...normalized,
+      timeline: normalized.timeline.map((event) => (
         typeof event?.message === 'string'
           ? { ...event, message: event.message.replace(/\bdemo\b/gi, 'simulation') }
           : event

@@ -26,5 +26,6 @@ Open the local URL printed by Vite. `npm run build` creates a production bundle 
 - Any six-digit login code is accepted. The simulated handover code is generated for each dispatch and must match the code shown to the Guardian; neither code is production authentication.
 - Map routes and responder direction cues are illustrative straight-line simulations, not live GPS or turn-by-turn road navigation.
 - Live video signaling uses `BroadcastChannel`, so it only connects tabs on the same browser and origin. Separate phones need a backend signaling service and production identity/access controls.
-- Phone links, payments, emergency call routing, and subscription prices are not functional.
+- The ResQ Safe + Health plan, revenue split, check-up bookings, partner network, rider earnings, phone links, payment flow, and emergency call routing are illustrative only and are not functional.
+- Open `/business-model` to view the sample annual plan and estimated revenue split. Guardian and Member check-up bookings and NRI profile settings are mock data shared between same-origin tabs.
 - Satellite tiles are loaded from Esri and require an internet connection.

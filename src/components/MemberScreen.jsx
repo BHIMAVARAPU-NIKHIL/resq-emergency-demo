@@ -8,6 +8,7 @@ import {
 import { audioManager } from '../utils/audio';
 import GradientPlaceholder from './GradientPlaceholder';
 import IncidentTimeline from './IncidentTimeline';
+import HealthCheckupCard from './HealthCheckupCard';
 import {
   AlertTriangle,
   HeartHandshake,
@@ -22,7 +23,9 @@ export default function MemberScreen({
   onTriggerFall,
   onToggleMonitoring,
   onCancelFall,
-  onResetScenario
+  onResetScenario,
+  healthCheckups,
+  onBookCheckup
 }) {
   const isBufferLoud = incidentState.status === 'buffer_loud';
   const isBufferWait = incidentState.status === 'buffer_wait';
@@ -192,6 +195,8 @@ export default function MemberScreen({
           )}
         </div>
       </div>
+
+      <HealthCheckupCard checkups={healthCheckups} onBook={onBookCheckup} />
 
       {/* Status banner */}
       <div className="p-3 bg-stone-50 border border-stone-200 rounded flex items-center justify-between text-xs">

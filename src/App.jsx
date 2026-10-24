@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { TIMINGS, COORDINATES, MEMBER_DATA, RESPONDER_DATA } from './config/constants';
 import { syncManager } from './utils/sync';
 import { audioManager } from './utils/audio';
 
 import LoginScreen from './components/LoginScreen';
 import RoleSwitcher from './components/RoleSwitcher';
-import GuardianDashboard from './components/GuardianDashboard';
-import ResponderDashboard from './components/ResponderDashboard';
-import MemberScreen from './components/MemberScreen';
 import IncidentStepper from './components/IncidentStepper';
 import MobileRoleNav from './components/MobileRoleNav';
+
+const BusinessModelPage = lazy(() => import('./components/BusinessModelPage'));
+const GuardianDashboard = lazy(() => import('./components/GuardianDashboard'));
+const ResponderDashboard = lazy(() => import('./components/ResponderDashboard'));
+const MemberScreen = lazy(() => import('./components/MemberScreen'));
 
 export default function App() {
   const [currentUserRole, setCurrentUserRole] = useState(() => {
@@ -68,6 +70,43 @@ export default function App() {
     } catch {
       // Ignored
     }
+  };
+
+  const handleBookCheckup = ({ date, time, hospital }) => {
+    let wasBooked = false;
+    syncManager.updateState((prev) => {
+      if (prev.healthCheckups.usedCount >= 3) return prev;
+      const appointment = new Date(`${date}T${time}`);
+      const dateLabel = appointment.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+      const timeLabel = appointment.toLocaleTimeString('en-IN', {
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+      wasBooked = true;
+      return {
+        ...prev,
+        healthCheckups: {
+          ...prev.healthCheckups,
+          usedCount: prev.healthCheckups.usedCount + 1,
+          nextDate: date,
+          nextTime: time,
+          hospital,
+          reminder: `${dateLabel} at ${timeLabel} · ${hospital}`
+        }
+      };
+    });
+    return wasBooked;
+  };
+
+  const handleUpdateGuardianProfile = (updates) => {
+    syncManager.updateState((prev) => ({
+      ...prev,
+      guardianProfile: { ...prev.guardianProfile, ...updates }
+    }));
   };
 
   // 3x Fast Speed Toggle
@@ -391,6 +430,14 @@ export default function App() {
   }, [incidentState.status]);
 
   // If user has not selected role yet, render Login Screen
+  if (window.location.pathname === '/business-model') {
+    return (
+      <Suspense fallback={<main className="min-h-screen bg-stone-100 p-6 text-sm text-stone-600">Loading business model…</main>}>
+        <BusinessModelPage />
+      </Suspense>
+    );
+  }
+
   if (!currentUserRole) {
     return <LoginScreen onLoginSuccess={handleLoginSuccess} />;
   }
@@ -410,36 +457,44 @@ export default function App() {
       <IncidentStepper status={incidentState.status} />
 
       {/* Role Specific Screens */}
-      <main className="flex-1 pb-20 lg:pb-0">
-        {currentUserRole === 'guardian' && (
-          <GuardianDashboard
-            incidentState={incidentState}
-            onAnswerGuardianCall={handleAnswerGuardianCall}
-          />
-        )}
+      <Suspense fallback={<main className="flex-1 px-4 py-8 text-center text-sm text-stone-500">Loading role dashboard…</main>}>
+        <main className="flex-1 pb-20 lg:pb-0">
+          {currentUserRole === 'guardian' && (
+            <GuardianDashboard
+              incidentState={incidentState}
+              onAnswerGuardianCall={handleAnswerGuardianCall}
+              healthCheckups={incidentState.healthCheckups}
+              onBookCheckup={handleBookCheckup}
+              guardianProfile={incidentState.guardianProfile}
+              onUpdateGuardianProfile={handleUpdateGuardianProfile}
+            />
+          )}
 
-        {currentUserRole === 'responder' && (
-          <ResponderDashboard
-            incidentState={incidentState}
-            onAcceptDispatch={handleAcceptDispatch}
-            onArrivedAtScene={handleArrivedAtScene}
-            onCallAmbulance={handleCallAmbulance}
-            onSubmitHandoverOtp={handleSubmitHandoverOtp}
-            onMarkTabletsLocated={handleMarkTabletsLocated}
-            onResetScenario={handleResetScenario}
-          />
-        )}
+          {currentUserRole === 'responder' && (
+            <ResponderDashboard
+              incidentState={incidentState}
+              onAcceptDispatch={handleAcceptDispatch}
+              onArrivedAtScene={handleArrivedAtScene}
+              onCallAmbulance={handleCallAmbulance}
+              onSubmitHandoverOtp={handleSubmitHandoverOtp}
+              onMarkTabletsLocated={handleMarkTabletsLocated}
+              onResetScenario={handleResetScenario}
+            />
+          )}
 
-        {currentUserRole === 'member' && (
-          <MemberScreen
-            incidentState={incidentState}
-            onTriggerFall={handleTriggerFall}
-            onToggleMonitoring={handleToggleMonitoring}
-            onCancelFall={handleCancelFall}
-            onResetScenario={handleResetScenario}
-          />
-        )}
-      </main>
+          {currentUserRole === 'member' && (
+            <MemberScreen
+              incidentState={incidentState}
+              healthCheckups={incidentState.healthCheckups}
+              onBookCheckup={handleBookCheckup}
+              onTriggerFall={handleTriggerFall}
+              onToggleMonitoring={handleToggleMonitoring}
+              onCancelFall={handleCancelFall}
+              onResetScenario={handleResetScenario}
+            />
+          )}
+        </main>
+      </Suspense>
 
       <MobileRoleNav currentRole={currentUserRole} onRoleChange={handleRoleChange} />
 

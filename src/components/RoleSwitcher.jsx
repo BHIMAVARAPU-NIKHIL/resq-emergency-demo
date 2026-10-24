@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Bike, HeartHandshake, Zap, RotateCcw, Info, X } from 'lucide-react';
+import PartnerOverview from './PartnerOverview';
 
 export default function RoleSwitcher({
   currentRole,
@@ -147,7 +148,7 @@ export default function RoleSwitcher({
       {/* About / simulation modal */}
       {showAboutModal && (
         <div className="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg border border-stone-300 max-w-md w-full p-5 shadow-lg space-y-4">
+          <div className="max-h-[90vh] max-w-md w-full overflow-y-auto bg-white rounded-lg border border-stone-300 p-5 shadow-lg space-y-4">
             <div className="flex items-center justify-between border-b border-stone-200 pb-3">
               <div className="flex items-center space-x-2">
                 <Info className="w-4 h-4 text-tealbrand-700" />
@@ -178,6 +179,12 @@ export default function RoleSwitcher({
                 <strong>Escalation Timing:</strong> Normal is 15s per stage. Toggle <strong>3x Fast</strong> to accelerate stages to 5 seconds each.
               </p>
             </div>
+
+            <PartnerOverview />
+
+            <a href="/business-model" className="block rounded border border-stone-200 bg-stone-50 p-3 text-xs font-semibold text-tealbrand-800 hover:bg-stone-100">
+              View ResQ Safe + Health plan and revenue split
+            </a>
 
             <div className="pt-2 border-t border-stone-100 flex justify-end">
               <button

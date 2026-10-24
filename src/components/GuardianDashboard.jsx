@@ -3,6 +3,8 @@ import SatelliteMap from './SatelliteMap';
 import { useLiveMedia } from '../utils/liveMedia';
 import GradientPlaceholder from './GradientPlaceholder';
 import IncidentTimeline from './IncidentTimeline';
+import HealthCheckupCard from './HealthCheckupCard';
+import RevenueSplit from './RevenueSplit';
 import {
   MEMBER_DATA,
   RESPONDER_DATA,
@@ -23,8 +25,18 @@ import {
 export default function GuardianDashboard({
   incidentState,
   onAnswerGuardianCall,
+  healthCheckups,
+  onBookCheckup,
+  guardianProfile,
+  onUpdateGuardianProfile,
 }) {
   const [csiWaveOffset, setCsiWaveOffset] = useState(0);
+  const [memberLocalTime, setMemberLocalTime] = useState(() => new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit'
+  }).format(new Date()));
   const liveVideoRef = useRef(null);
   const { remoteStream, connectionStatus } = useLiveMedia('guardian', incidentState.responderAccepted);
 
@@ -33,6 +45,18 @@ export default function GuardianDashboard({
     const interval = setInterval(() => {
       setCsiWaveOffset((prev) => (prev + 1) % 100);
     }, 80);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMemberLocalTime(new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit'
+      }).format(new Date()));
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -87,6 +111,58 @@ export default function GuardianDashboard({
           </div>
         </div>
       </div>
+
+      <section className="rounded-lg border border-stone-200 bg-white p-4 shadow-xs sm:p-5" aria-labelledby="guardian-location-title">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-end">
+          <label id="guardian-location-title" className="text-xs font-semibold text-stone-700">
+            Where do you live?
+            <select
+              value={guardianProfile.residence}
+              onChange={(event) => onUpdateGuardianProfile({ residence: event.target.value })}
+              className="mt-1 block w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm"
+            >
+              <option value="india">India</option>
+              <option value="abroad">Abroad (NRI)</option>
+            </select>
+          </label>
+          {guardianProfile.residence === 'abroad' && (
+            <div role="status" className="rounded border border-tealbrand-100 bg-tealbrand-50 p-3 text-xs text-tealbrand-900">
+              <span className="block font-bold">Member’s local time in India</span>
+              <span className="mt-1 block text-sm">{memberLocalTime} · Asia/Kolkata</span>
+            </div>
+          )}
+        </div>
+        {guardianProfile.residence === 'abroad' && (
+          <fieldset className="mt-4 border-t border-stone-100 pt-3">
+            <legend className="text-xs font-bold text-stone-700">Guardian alerts (mock)</legend>
+            <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
+              <label className="flex items-center gap-2 text-xs text-stone-700">
+                <input
+                  type="checkbox"
+                  checked={guardianProfile.smsAlerts}
+                  onChange={(event) => onUpdateGuardianProfile({ smsAlerts: event.target.checked })}
+                />
+                SMS alerts (mock)
+              </label>
+              <label className="flex items-center gap-2 text-xs text-stone-700">
+                <input
+                  type="checkbox"
+                  checked={guardianProfile.whatsappAlerts}
+                  onChange={(event) => onUpdateGuardianProfile({ whatsappAlerts: event.target.checked })}
+                />
+                WhatsApp alerts (mock)
+              </label>
+            </div>
+            <p className="mt-2 text-[11px] text-stone-500">No messages are sent.</p>
+          </fieldset>
+        )}
+      </section>
+
+      <HealthCheckupCard
+        checkups={healthCheckups}
+        onBook={onBookCheckup}
+        bookingForMember
+      />
 
       {/* Incoming Guardian Call Banner if active */}
       {isGuardianCalling && (
@@ -201,24 +277,26 @@ export default function GuardianDashboard({
 
       <IncidentTimeline timeline={incidentState.timeline} title="Guardian incident timeline" />
 
-      <section className="bg-tealbrand-900 text-white rounded-lg p-4 sm:p-5 shadow-xs" aria-label="ResQ subscription plans">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <section className="space-y-4 rounded-lg bg-tealbrand-900 p-4 text-white shadow-xs sm:p-5" aria-label="ResQ annual plan">
+        <div className="flex flex-col gap-3 border-b border-white/20 pb-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-tealbrand-200">ResQ Protection Plan</span>
-            <h3 className="text-sm font-bold mt-1">Subscription plan preview</h3>
-            <p className="text-xs text-tealbrand-100 mt-1">Subscription plans are illustrative; payment is not enabled.</p>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-tealbrand-200">One annual plan</span>
+            <h3 className="mt-1 text-base font-bold">ResQ Safe + Health</h3>
+            <p className="mt-1 text-lg font-bold">₹4500 <span className="text-xs font-medium text-tealbrand-100">per year</span></p>
+            <p className="mt-1 text-xs text-tealbrand-100">Illustrative plan; payment is not enabled.</p>
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="bg-white/10 border border-white/20 rounded px-3 py-2 text-center">
-              <span className="block text-base font-bold">₹210</span>
-              <span className="block text-[10px] text-tealbrand-100">per month</span>
-            </div>
-            <div className="bg-white/10 border border-white/20 rounded px-3 py-2 text-center">
-              <span className="block text-base font-bold">₹2,500</span>
-              <span className="block text-[10px] text-tealbrand-100">per year</span>
-            </div>
-          </div>
+          <a href="/business-model" className="w-fit rounded border border-white/30 px-3 py-2 text-xs font-semibold text-white hover:bg-white/10">
+            View business model
+          </a>
         </div>
+        <ul className="grid grid-cols-1 gap-2 text-xs sm:grid-cols-2">
+          <li>Fall and emergency detection</li>
+          <li>Nearest-rider dispatch</li>
+          <li>Helpline check-in call</li>
+          <li>Live caretaker dashboard</li>
+          <li className="sm:col-span-2">3 free health check-ups per year, each with a doctor consult</li>
+        </ul>
+        <RevenueSplit />
       </section>
 
       {/* Guardian Live View (Section 5 from requirements) */}
